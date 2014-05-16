@@ -6,7 +6,13 @@
   "license": "MIT",
   "main": "src/juicy-popover.html",
   "keywords": [
-    "web-components"
+    "web-components",
+    "dropdown",
+    "popover",
+    "tooltip",
+    "combo box",
+    "combo",
+    "combobox"
   ],
   "ignore": [
     "**/.*",
