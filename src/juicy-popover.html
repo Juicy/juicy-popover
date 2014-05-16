@@ -21,6 +21,16 @@
 
 <script>
   (function (global) {
+    var importDoc;
+    if (document._currentScript) {
+      //@see http://www.polymer-project.org/platform/html-imports.html
+      //@see https://groups.google.com/d/topic/polymer-dev/4UKty9tb1-s/discussion
+      importDoc = document._currentScript.ownerDocument;
+    }
+    else {
+      importDoc = document.currentScript.ownerDocument;
+    }
+
     var JuicyDropdownElementPrototype = Object.create(HTMLElement.prototype);
 
     JuicyDropdownElementPrototype.attributeChangedCallback = function (attributeName, oldVal, newVal) {
@@ -36,8 +46,6 @@
     };
 
     JuicyDropdownElementPrototype.createdCallback = function () {
-      //var importDoc = document.currentScript.ownerDocument; //TODO why this doesn't work?
-      var importDoc = document.querySelector('link[href*=juicy-popover]').import;
       var t = importDoc.querySelector('#jdtemplate');
       var clone = document.importNode(t.content, true);
       clone.querySelector("#handle content").setAttribute("select", this.getAttribute("handleSelector") || ".handle");
