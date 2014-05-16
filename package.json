@@ -1,0 +1,15 @@
+{
+  "name": "juicy-dropdown",
+  "version": "0.0.0",
+  "description": "Polymer Element that expands an area when clicked on a handle",
+  "main": "src/juicy-dropdown.html",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Juicy/juicy-dropdown"
+  },
+  "bugs": {
+    "url": "https://github.com/Juicy/juicy-dropdown/issues"
+  },
+  "license": "MIT"
+}

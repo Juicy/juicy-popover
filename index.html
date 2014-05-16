@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>&lt;juicy-dropdown&gt;</title>
+
+  <!-- Importing Web Component's Polyfill -->
+  <script src="../platform/platform.js"></script>
+
+  <!-- Importing Custom Elements -->
+  <link rel="import" href="../juicy-dropdown/src/juicy-dropdown.html">
+
+  <style>
+    html {
+      min-height: 100%;
+    }
+
+    body {
+      padding: 2em;
+    }
+
+    #color {
+      margin-right: 0;
+    }
+
+    juicy-dropdown button.handle {
+      color: #fff;
+      text-shadow: -2px 2px #346392;
+      background-color: #6496c8;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#6496c8), to(#346392));
+      background-image: -webkit-linear-gradient(top, #6496c8, #346392);
+      background-image: -moz-linear-gradient(top, #6496c8, #346392);
+      background-image: -o-linear-gradient(top, #6496c8, #346392);
+      background-image: -ms-linear-gradient(top, #6496c8, #346392);
+      background-image: linear-gradient(top, #6496c8, #346392);
+      box-shadow: inset 0 0 0 1px #27496d;
+      border: none;
+      border-radius: 2px;
+    }
+
+    juicy-dropdown button.handle:hover {
+      box-shadow: inset 0 0 0 1px #27496d, 0 0 5px #193047;
+    }
+
+    juicy-dropdown button.handle:active,
+    juicy-dropdown.expanded button.handle {
+      box-shadow: inset 0 0 0 1px #27496d, inset 0 5px 30px #193047;
+    }
+
+    #combo button.handle {
+      margin: -28px;
+    }
+
+    .expandable {
+      border: 1px solid #222;
+      box-shadow: 1px 1px 2px #000;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>&lt;juicy-dropdown&gt;</h1>
+
+<p>See <a href="https://github.com/Juicy/juicy-dropdown">README.md</a> for docs</p>
+
+<div>Simple combo box:
+  <input type="text" id="color">
+  <juicy-dropdown id="combo" handleSelector="button.handle" expandableSelector=".expandable">
+    <button class="handle">▼</button>
+
+    <div class="expandable">
+      <button onclick="document.querySelector('#color').value = 'red'">Red</button>
+      <br>
+      <button onclick="document.querySelector('#color').value = 'green'">Green</button>
+      <br>
+      <button onclick="document.querySelector('#color').value = 'black'">Black</button>
+      <br>
+      <button onclick="document.querySelector('#color').value = 'blue'">Blue</button>
+    </div>
+  </juicy-dropdown>
+</div>
+
+<div>Expand to the right:
+  <juicy-dropdown position="right top" handleSelector="button.handle" expandableSelector=".expandable">
+    <button class="handle">▶</button>
+
+    <div class="expandable">
+      <button onclick="document.querySelector('#color').value = 'red'">Red</button>
+      <br>
+      <button onclick="document.querySelector('#color').value = 'green'">Green</button>
+      <br>
+      <button onclick="document.querySelector('#color').value = 'black'">Black</button>
+      <br>
+      <button onclick="document.querySelector('#color').value = 'blue'">Blue</button>
+    </div>
+  </juicy-dropdown>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<!-- Define your custom element -->
+<polymer-element name="juicy-dropdown" attributes="handleSelector expandableSelector position">
+  <template>
+    <style>
+      #handle {
+
+      }
+
+      #expandable {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 20px;
+      }
+
+      #expandable.expanded {
+        display: inline-block;
+      }
+    </style>
+    <span id="handle">
+      <content select="{{handleSelector}}"></content>
+    </span>
+    <span id="expandable">
+      <content select="{{expandableSelector}}"></content>
+    </span>
+  </template>
+  <script>
+    (function () {
+      Polymer('juicy-dropdown', {
+        position: "bottom left",
+        handleSelector: ".handle",
+        expandableSelector: ".expandable",
+        ready: function () {
+          var ignore = false;
+          this.$.handle.addEventListener("mousedown", function (ev) {
+            if (!this.$.expandable.classList.contains("expanded")) {
+              this.expand(ev.target);
+              ev.preventDefault();
+              ev.stopPropagation();
+              ignore = true;
+            }
+          }.bind(this));
+
+          window.addEventListener("mouseup", function (ev) {
+            if (!ignore && this.$.expandable.classList.contains("expanded")) {
+              this.collapse();
+              ev.preventDefault();
+              ev.stopPropagation();
+            }
+            ignore = false;
+          }.bind(this));
+        },
+        expand: function (elem) {
+          this.$.expandable.classList.toggle("expanded");
+          this.classList.toggle("expanded");
+          var box = elem.getBoundingClientRect();
+
+          if (this.position.indexOf("top") > -1) {
+            this.$.expandable.style.top = box.top + "px";
+          }
+          else {
+            this.$.expandable.style.top = box.top + box.height + "px";
+          }
+
+          if (this.position.indexOf("right") > -1) {
+            this.$.expandable.style.left = box.left + box.width + "px";
+          }
+          else {
+            this.$.expandable.style.left = box.left + "px";
+          }
+
+        },
+        collapse: function () {
+          this.$.expandable.classList.remove("expanded");
+          this.classList.remove("expanded");
+        }
+      });
+
+    })();
+  </script>
+</polymer-element>
