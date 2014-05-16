@@ -1,6 +1,8 @@
 # &lt;juicy-dropdown&gt;
 
-`<juicy-dropdown>` is a (vanilla) Custom Element that expands an area when clicked on a handle
+`<juicy-dropdown>` is a (vanilla) Custom Element that expands an area when clicked on a handle.
+
+It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc.
 
 ## Demo
 
