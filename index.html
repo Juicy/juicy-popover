@@ -51,6 +51,33 @@
       margin: -28px;
     }
 
+    juicy-dropdown div.handle {
+      font-family: sans-serif;
+      display: inline-block;
+      cursor: default;
+      color: #fff;
+      text-shadow: -2px 2px #346392;
+      background-color: #6496c8;
+      box-shadow: inset 0 0 0 1px #27496d;
+      border: none;
+      border-radius: 2px;
+      font-size: 14px;
+      padding: 2px;
+    }
+
+    juicy-dropdown div.handle:hover {
+      box-shadow: inset 0 0 0 1px #27496d, 0 0 5px #193047;
+    }
+
+    juicy-dropdown div.handle:active,
+    juicy-dropdown.expanded div.handle {
+      box-shadow: inset 0 0 0 1px #27496d, inset 0 5px 30px #193047;
+    }
+
+    #combo button.handle {
+      margin: -28px;
+    }
+
     .expandable {
       border: 1px solid #222;
       box-shadow: 1px 1px 2px #000;
@@ -64,8 +91,10 @@
 
 <p>See <a href="https://github.com/Juicy/juicy-dropdown">README.md</a> for docs</p>
 
-<div>Simple combo box:
-  <input type="text" id="color">
+<h2>Sample combo box</h2>
+
+<div>Choose your favorite color:
+  <input type="text" id="color" placeholder="&lt;color&gt;">
   <juicy-dropdown id="combo" handleSelector="button.handle" expandableSelector=".expandable">
     <button class="handle">▼</button>
 
@@ -81,18 +110,20 @@
   </juicy-dropdown>
 </div>
 
-<div>Expand to the right:
-  <juicy-dropdown position="right top" handleSelector="button.handle" expandableSelector=".expandable">
-    <button class="handle">▶</button>
+<h2>Sample expandable menu</h2>
+
+<div>Change the appearance of the button:
+  <juicy-dropdown position="right top" handleSelector=".handle" expandableSelector=".expandable">
+    <div class="handle">Background color ▶</div>
 
     <div class="expandable">
-      <button onclick="document.querySelector('#color').value = 'red'">Red</button>
+      <button onclick="document.querySelector('div.handle').style.background= 'crimson'">Red</button>
       <br>
-      <button onclick="document.querySelector('#color').value = 'green'">Green</button>
+      <button onclick="document.querySelector('div.handle').style.background = 'green'">Green</button>
       <br>
-      <button onclick="document.querySelector('#color').value = 'black'">Black</button>
+      <button onclick="document.querySelector('div.handle').style.background = '#111'">Black</button>
       <br>
-      <button onclick="document.querySelector('#color').value = 'blue'">Blue</button>
+      <button onclick="document.querySelector('div.handle').style.background = '#6496c8'">Blue</button>
     </div>
   </juicy-dropdown>
 </div>
