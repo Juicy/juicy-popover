@@ -37,7 +37,7 @@
 
     JuicyDropdownElementPrototype.createdCallback = function () {
       //var importDoc = document.currentScript.ownerDocument; //TODO why this doesn't work?
-      var importDoc = document.querySelector('link[href*=juicy-dropdown]').import;
+      var importDoc = document.querySelector('link[href*=juicy-popover]').import;
       var t = importDoc.querySelector('#jdtemplate');
       var clone = document.importNode(t.content, true);
       clone.querySelector("#handle content").setAttribute("select", this.getAttribute("handleSelector") || ".handle");
@@ -92,7 +92,7 @@
       this.classList.remove("expanded");
     };
 
-    global.JuicyDropdownElement = document.registerElement('juicy-dropdown', {
+    global.JuicyDropdownElement = document.registerElement('juicy-popover', {
       prototype: JuicyDropdownElementPrototype
     });
   })(window);

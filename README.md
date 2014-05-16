@@ -1,19 +1,19 @@
-# &lt;juicy-dropdown&gt;
+# &lt;juicy-popover&gt;
 
-`<juicy-dropdown>` is a (vanilla) Custom Element that expands an area when clicked on a handle.
+`<juicy-popover>` is a (vanilla) Custom Element that expands an area when clicked on a handle.
 
 It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc.
 
 ## Demo
 
-[Check it live!](http://juicy.github.io/juicy-dropdown)
+[Check it live!](http://juicy.github.io/juicy-popover)
 
 ## Usage
 
 1. Install the component using [Bower](http://bower.io/):
 
     ```sh
-    $ bower install juicy-dropdown --save
+    $ bower install juicy-popover --save
     ```
 
 2. Import Web Components' polyfill (optional, allows to run it in old browsers):
@@ -25,17 +25,17 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
 3. Import Custom Element:
 
     ```html
-    <link rel="import" href="bower_components/juicy-dropdown/src/juicy-dropdown.html">
+    <link rel="import" href="bower_components/juicy-popover/src/juicy-popover.html">
     ```
 
 4. Start using it!
 
     ```html
-      <juicy-dropdown position="bottom left" handleSelector="button.handle" expandableSelector=".expandable">
+      <juicy-popover position="bottom left" handleSelector="button.handle" expandableSelector=".expandable">
         <button class="handle">▼</button>
         <div class="expandable">
           You only see me when the button is pressed
-      </juicy-dropdown>
+      </juicy-popover>
     ```
 
 ## Attributes
@@ -43,8 +43,8 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
 Attribute            | Type           | Default       | Description
 ---                  | ---            | ---           | ---
 `position`           | *String*       | `bottom left` | Position of expandable after button is pressed. Possible values: `top` or `bottom`, `left` or `right` (space separated)
-`handleSelector`     | *String*       | `.handle`     | Selector to find the handle child node in `<juicy-dropdown>` light DOM
-`expandableSelector` | *String*       | `.expandable` | Selector to find the expandable child node in `<juicy-dropdown>` light DOM
+`handleSelector`     | *String*       | `.handle`     | Selector to find the handle child node in `<juicy-popover>` light DOM
+`expandableSelector` | *String*       | `.expandable` | Selector to find the expandable child node in `<juicy-popover>` light DOM
 
 ## Methods
 

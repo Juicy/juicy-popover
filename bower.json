@@ -1,10 +1,10 @@
 {
-  "name": "juicy-dropdown",
+  "name": "juicy-popover",
   "version": "0.0.0",
   "description": "Custom Element that expands an area when clicked on a handle",
-  "homepage": "https://github.com/Juicy/juicy-dropdown",
+  "homepage": "https://github.com/Juicy/juicy-popover",
   "license": "MIT",
-  "main": "src/juicy-dropdown.html",
+  "main": "src/juicy-popover.html",
   "keywords": [
     "web-components"
   ],
