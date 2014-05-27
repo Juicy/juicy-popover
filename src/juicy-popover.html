@@ -71,6 +71,19 @@
         }
         ignore = false;
       }.bind(this));
+
+	  /**
+	   * Temporary solution for autoclosing popover, when clicking inside expandable 
+	   * Prevents default behavior for given event.
+	   * @param  {Event} ev event
+	   */
+      expandable.addEventListener("mouseup", function excludeExpandable(ev) {
+        if (!ignore && expandable.classList.contains("expanded")) {
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
+        ignore = false;
+      });
     };
 
     JuicyDropdownElementPrototype.expand = function (elem) {
