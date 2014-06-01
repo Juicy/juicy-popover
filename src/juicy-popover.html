@@ -1,4 +1,4 @@
-<template id="jdtemplate">
+<template id="juicy-popover-template">
   <style>
     #expandable {
       display: none;
@@ -32,9 +32,9 @@
       importDoc = document.currentScript.ownerDocument;
     }
 
-    var JuicyDropdownElementPrototype = Object.create(HTMLElement.prototype);
+    var JuicyPopoverElementPrototype = Object.create(HTMLElement.prototype);
 
-    JuicyDropdownElementPrototype.attributeChangedCallback = function (attributeName, oldVal, newVal) {
+    JuicyPopoverElementPrototype.attributeChangedCallback = function (attributeName, oldVal, newVal) {
       switch(attributeName) {
         case "handleSelector":
           this.shadowRoot.querySelector("#handle content").setAttribute("select", newVal || ".handle");
@@ -46,8 +46,8 @@
       }
     };
 
-    JuicyDropdownElementPrototype.createdCallback = function () {
-      var t = importDoc.querySelector('#jdtemplate');
+    JuicyPopoverElementPrototype.createdCallback = function () {
+      var t = importDoc.querySelector('#juicy-popover-template');
       var clone = document.importNode(t.content, true);
       clone.querySelector("#handle content").setAttribute("select", this.getAttribute("handleSelector") || ".handle");
       clone.querySelector("#expandable content").setAttribute("select", this.getAttribute("expandableSelector") || ".expandable");
@@ -87,7 +87,7 @@
       });
     };
 
-    JuicyDropdownElementPrototype.expand = function (elem) {
+    JuicyPopoverElementPrototype.expand = function (elem) {
       var expandable = this.shadowRoot.querySelector("#expandable");
       expandable.classList.toggle("expanded");
       this.classList.toggle("expanded");
@@ -108,13 +108,13 @@
       }
     };
 
-    JuicyDropdownElementPrototype.collapse = function () {
+    JuicyPopoverElementPrototype.collapse = function () {
       this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
       this.classList.remove("expanded");
     };
 
-    global.JuicyDropdownElement = document.registerElement('juicy-popover', {
-      prototype: JuicyDropdownElementPrototype
+    global.JuicyPopoverElement = document.registerElement('juicy-popover', {
+      prototype: JuicyPopoverElementPrototype
     });
   })(window);
 </script>
