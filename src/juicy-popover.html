@@ -2,9 +2,10 @@
   <style>
     #expandable {
       display: none;
-      position: fixed;
+      position: absolute;
       left: 0;
       top: 20px;
+      z-index: 999;
     }
 
     #expandable.expanded {
@@ -90,21 +91,20 @@
       var expandable = this.shadowRoot.querySelector("#expandable");
       expandable.classList.toggle("expanded");
       this.classList.toggle("expanded");
-      var box = elem.getBoundingClientRect();
 
       var position = this.getAttribute("position") || "bottom left";
       if (position.indexOf("top") > -1) {
-        expandable.style.top = box.top + "px";
+        expandable.style.top = elem.offsetTop + "px";
       }
       else {
-        expandable.style.top = box.top + box.height + "px";
+        expandable.style.top = elem.offsetTop + elem.offsetHeight + "px";
       }
 
       if (position.indexOf("right") > -1) {
-        expandable.style.left = box.left + box.width + "px";
+        expandable.style.left = elem.offsetLeft + elem.offsetWidth + "px";
       }
       else {
-        expandable.style.left = box.left + "px";
+        expandable.style.left = elem.offsetLeft + "px";
       }
     };
 
