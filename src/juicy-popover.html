@@ -58,9 +58,14 @@
       this.shadowRoot.querySelector("#handle").addEventListener("mousedown", function (ev) {
         if (!expandable.classList.contains("expanded")) {
           this.expand(ev.target);
-          ev.preventDefault();
           ev.stopPropagation();
           ignore = true;
+        }
+      }.bind(this));
+
+      this.shadowRoot.querySelector("#handle").addEventListener("mouseup", function (ev) {
+        if(ev.target.nodeName == "INPUT") {
+          ignore = true; //just a friendly feature - don't collapse the expandable if clicked on a handler which is an input
         }
       }.bind(this));
 
@@ -73,17 +78,14 @@
         ignore = false;
       }.bind(this));
 
-	  /**
-	   * Temporary solution for autoclosing popover, when clicking inside expandable 
-	   * Prevents default behavior for given event.
-	   * @param  {Event} ev event
-	   */
+    /**
+     * Temporary solution for autoclosing popover, when clicking inside expandable 
+     * Prevents default behavior for given event.
+     * @param  {Event} ev event
+     */
       expandable.addEventListener("mouseup", function excludeExpandable(ev) {
-        if (!ignore && expandable.classList.contains("expanded")) {
-          ev.preventDefault();
-          ev.stopPropagation();
-        }
-        ignore = false;
+        ev.preventDefault();
+        ev.stopPropagation();
       });
     };
 
