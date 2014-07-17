@@ -19,5 +19,6 @@
     "bower_components"
   ],
   "dependencies": {
+    "polymer-platform": "~0.3.4"
   }
 }
