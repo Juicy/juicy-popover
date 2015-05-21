@@ -108,11 +108,17 @@
       else {
         expandable.style.left = elem.offsetLeft + "px";
       }
+
+      var e = new Event("juicy-popover-expand");
+      this.dispatchEvent(e);
     };
 
     JuicyPopoverElementPrototype.collapse = function () {
       this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
       this.classList.remove("expanded");
+
+      var e = new Event("juicy-popover-collapse");
+      this.dispatchEvent(e);
     };
 
     global.JuicyPopoverElement = document.registerElement('juicy-popover', {
