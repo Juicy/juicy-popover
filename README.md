@@ -64,4 +64,4 @@ Name               | Param name | Type      | Description
 
 ## License
 
-[MIT License](http://opensource.org/licenses/MIT)
+MIT
