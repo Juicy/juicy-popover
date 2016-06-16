@@ -1,140 +1,140 @@
 <template id="juicy-popover-template">
-  <style>
-    #expandable {
-      display: none;
-      position: absolute;
-      left: 0;
-      top: 20px;
-      z-index: 999;
-    }
+    <style>
+        #expandable {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 20px;
+            z-index: 999;
+        }
 
-    #expandable.expanded {
-      display: inline-block;
-    }
-  </style>
+        #expandable.expanded {
+            display: inline-block;
+        }
+    </style>
     <span id="handle">
-      <content select="{{handleSelector}}"></content>
+        <content select="{{handleSelector}}"></content>
     </span>
     <span id="expandable">
-      <content select="{{expandableSelector}}"></content>
+        <content select="{{expandableSelector}}"></content>
     </span>
 </template>
 
 <script>
-  (function (global) {
-    var importDoc;
-    if (document._currentScript) {
-      //@see http://www.polymer-project.org/platform/html-imports.html
-      //@see https://groups.google.com/d/topic/polymer-dev/4UKty9tb1-s/discussion
-      importDoc = document._currentScript.ownerDocument;
-    }
-    else {
-      importDoc = document.currentScript.ownerDocument;
-    }
-
-    var JuicyPopoverElementPrototype = Object.create(HTMLElement.prototype);
-
-    JuicyPopoverElementPrototype.attributeChangedCallback = function (attributeName, oldVal, newVal) {
-      switch(attributeName) {
-        case "handleSelector":
-          this.shadowRoot.querySelector("#handle content").setAttribute("select", newVal || ".handle");
-          break;
-
-        case "expandableSelector":
-          this.shadowRoot.querySelector("#expandable content").setAttribute("select", newVal || ".expandable");
-          break;
-      }
-    };
-
-    JuicyPopoverElementPrototype.createdCallback = function () {
-      var t = importDoc.querySelector('#juicy-popover-template');
-      var clone = document.importNode(t.content, true);
-      clone.querySelector("#handle content").setAttribute("select", this.getAttribute("handleSelector") || ".handle");
-      clone.querySelector("#expandable content").setAttribute("select", this.getAttribute("expandableSelector") || ".expandable");
-      this.createShadowRoot().appendChild(clone);
-
-      var ignore = false;
-      var expandable = this.shadowRoot.querySelector("#expandable");
-      this.shadowRoot.querySelector("#handle").addEventListener("mousedown", function (ev) {
-        if (!expandable.classList.contains("expanded")) {
-          this.expand(ev.target);
-          ev.stopPropagation();
-          ignore = true;
+    (function (global) {
+        var importDoc;
+        if (document._currentScript) {
+            //@see http://www.polymer-project.org/platform/html-imports.html
+            //@see https://groups.google.com/d/topic/polymer-dev/4UKty9tb1-s/discussion
+            importDoc = document._currentScript.ownerDocument;
         }
-      }.bind(this));
-
-      this.shadowRoot.querySelector("#handle").addEventListener("mouseup", function (ev) {
-        if(ev.target.nodeName == "INPUT") {
-          ignore = true; //just a friendly feature - don't collapse the expandable if clicked on a handler which is an input
-        }
-      }.bind(this));
-
-      window.addEventListener("mouseup", function (ev) {
-        if (!ignore && expandable.classList.contains("expanded")) {
-          this.collapse();
-          ev.preventDefault();
-          ev.stopPropagation();
-        }
-        ignore = false;
-      }.bind(this));
-
-    /**
-     * Temporary solution for autoclosing popover, when clicking inside expandable 
-     * Prevents default behavior for given event.
-     * @param  {Event} ev event
-     */
-      expandable.addEventListener("mouseup", function excludeExpandable(ev) {
-        ev.preventDefault();
-        ev.stopPropagation();
-      });
-
-      window.addEventListener("resize", function (e) {
-          if (expandable.classList.contains("expanded")) {
-              this.reposition();
-          }
-      }.bind(this));
-    };
-
-    JuicyPopoverElementPrototype.reposition = function () {
-        var expandable = this.shadowRoot.querySelector("#expandable");
-        var elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
-        var position = this.getAttribute("position") || "bottom left";
-
-        if (position.indexOf("top") > -1) {
-            expandable.style.top = elem.offsetTop + "px";
-        } else {
-            expandable.style.top = elem.offsetTop + elem.offsetHeight + "px";
+        else {
+            importDoc = document.currentScript.ownerDocument;
         }
 
-        if (position.indexOf("right") > -1) {
-            expandable.style.left = elem.offsetLeft + elem.offsetWidth + "px";
-        } else {
-            expandable.style.left = elem.offsetLeft + "px";
-        }
-    };
+        var JuicyPopoverElementPrototype = Object.create(HTMLElement.prototype);
 
-    JuicyPopoverElementPrototype.expand = function (elem) {
-      var expandable = this.shadowRoot.querySelector("#expandable");
-      expandable.classList.toggle("expanded");
-      this.classList.toggle("expanded");
+        JuicyPopoverElementPrototype.attributeChangedCallback = function (attributeName, oldVal, newVal) {
+            switch (attributeName) {
+                case "handleSelector":
+                    this.shadowRoot.querySelector("#handle content").setAttribute("select", newVal || ".handle");
+                    break;
 
-      this.expandedOnElement = elem;
-      this.reposition();
+                case "expandableSelector":
+                    this.shadowRoot.querySelector("#expandable content").setAttribute("select", newVal || ".expandable");
+                    break;
+            }
+        };
 
-      var e = new Event("juicy-popover-expand");
-      this.dispatchEvent(e);
-    };
+        JuicyPopoverElementPrototype.createdCallback = function () {
+            var t = importDoc.querySelector('#juicy-popover-template');
+            var clone = document.importNode(t.content, true);
+            clone.querySelector("#handle content").setAttribute("select", this.getAttribute("handleSelector") || ".handle");
+            clone.querySelector("#expandable content").setAttribute("select", this.getAttribute("expandableSelector") || ".expandable");
+            this.createShadowRoot().appendChild(clone);
 
-    JuicyPopoverElementPrototype.collapse = function () {
-      this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
-      this.classList.remove("expanded");
+            var ignore = false;
+            var expandable = this.shadowRoot.querySelector("#expandable");
+            this.shadowRoot.querySelector("#handle").addEventListener("mousedown", function (ev) {
+                if (!expandable.classList.contains("expanded")) {
+                    this.expand(ev.target);
+                    ev.stopPropagation();
+                    ignore = true;
+                }
+            }.bind(this));
 
-      var e = new Event("juicy-popover-collapse");
-      this.dispatchEvent(e);
-    };
+            this.shadowRoot.querySelector("#handle").addEventListener("mouseup", function (ev) {
+                if (ev.target.nodeName == "INPUT") {
+                    ignore = true; //just a friendly feature - don't collapse the expandable if clicked on a handler which is an input
+                }
+            }.bind(this));
 
-    global.JuicyPopoverElement = document.registerElement('juicy-popover', {
-      prototype: JuicyPopoverElementPrototype
-    });
-  })(window);
+            window.addEventListener("mouseup", function (ev) {
+                if (!ignore && expandable.classList.contains("expanded")) {
+                    this.collapse();
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                }
+                ignore = false;
+            }.bind(this));
+
+            /**
+             * Temporary solution for autoclosing popover, when clicking inside expandable
+             * Prevents default behavior for given event.
+             * @param  {Event} ev event
+             */
+            expandable.addEventListener("mouseup", function excludeExpandable(ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+            });
+
+            window.addEventListener("resize", function (e) {
+                if (expandable.classList.contains("expanded")) {
+                    this.reposition();
+                }
+            }.bind(this));
+        };
+
+        JuicyPopoverElementPrototype.reposition = function () {
+            var expandable = this.shadowRoot.querySelector("#expandable");
+            var elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
+            var position = this.getAttribute("position") || "bottom left";
+
+            if (position.indexOf("top") > -1) {
+                expandable.style.top = elem.offsetTop + "px";
+            } else {
+                expandable.style.top = elem.offsetTop + elem.offsetHeight + "px";
+            }
+
+            if (position.indexOf("right") > -1) {
+                expandable.style.left = elem.offsetLeft + elem.offsetWidth + "px";
+            } else {
+                expandable.style.left = elem.offsetLeft + "px";
+            }
+        };
+
+        JuicyPopoverElementPrototype.expand = function (elem) {
+            var expandable = this.shadowRoot.querySelector("#expandable");
+            expandable.classList.toggle("expanded");
+            this.classList.toggle("expanded");
+
+            this.expandedOnElement = elem;
+            this.reposition();
+
+            var e = new Event("juicy-popover-expand");
+            this.dispatchEvent(e);
+        };
+
+        JuicyPopoverElementPrototype.collapse = function () {
+            this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
+            this.classList.remove("expanded");
+
+            var e = new Event("juicy-popover-collapse");
+            this.dispatchEvent(e);
+        };
+
+        global.JuicyPopoverElement = document.registerElement('juicy-popover', {
+            prototype: JuicyPopoverElementPrototype
+        });
+    })(window);
 </script>
