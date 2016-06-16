@@ -87,6 +87,30 @@
         ev.preventDefault();
         ev.stopPropagation();
       });
+
+      window.addEventListener("resize", function (e) {
+          if (expandable.classList.contains("expanded")) {
+              this.reposition();
+          }
+      }.bind(this));
+    };
+
+    JuicyPopoverElementPrototype.reposition = function () {
+        var expandable = this.shadowRoot.querySelector("#expandable");
+        var elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
+        var position = this.getAttribute("position") || "bottom left";
+
+        if (position.indexOf("top") > -1) {
+            expandable.style.top = elem.offsetTop + "px";
+        } else {
+            expandable.style.top = elem.offsetTop + elem.offsetHeight + "px";
+        }
+
+        if (position.indexOf("right") > -1) {
+            expandable.style.left = elem.offsetLeft + elem.offsetWidth + "px";
+        } else {
+            expandable.style.left = elem.offsetLeft + "px";
+        }
     };
 
     JuicyPopoverElementPrototype.expand = function (elem) {
@@ -94,20 +118,8 @@
       expandable.classList.toggle("expanded");
       this.classList.toggle("expanded");
 
-      var position = this.getAttribute("position") || "bottom left";
-      if (position.indexOf("top") > -1) {
-        expandable.style.top = elem.offsetTop + "px";
-      }
-      else {
-        expandable.style.top = elem.offsetTop + elem.offsetHeight + "px";
-      }
-
-      if (position.indexOf("right") > -1) {
-        expandable.style.left = elem.offsetLeft + elem.offsetWidth + "px";
-      }
-      else {
-        expandable.style.left = elem.offsetLeft + "px";
-      }
+      this.expandedOnElement = elem;
+      this.reposition();
 
       var e = new Event("juicy-popover-expand");
       this.dispatchEvent(e);
