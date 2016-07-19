@@ -1,5 +1,9 @@
 <template id="juicy-popover-template">
     <style>
+        #container {
+            position: relative;
+        }
+
         #expandable {
             display: none;
             position: absolute;
@@ -12,12 +16,14 @@
             display: inline-block;
         }
     </style>
-    <span id="handle">
-        <content select="{{handleSelector}}"></content>
-    </span>
-    <span id="expandable">
-        <content select="{{expandableSelector}}"></content>
-    </span>
+    <div id="container">
+        <span id="handle">
+            <content select="{{handleSelector}}"></content>
+        </span>
+        <span id="expandable">
+            <content select="{{expandableSelector}}"></content>
+        </span>
+    </div>
 </template>
 
 <script>
