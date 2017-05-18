@@ -62,6 +62,18 @@ version: 0.0.3
                     }
                     this.disabled = shouldBeDisabled;
                     break;
+
+                case "expanded":
+                    var shouldBeExpanded = (newVal !== null);
+                    if(!this.expanded && shouldBeExpanded) {
+                        this.expand();
+                    }
+                    if(this.expanded && !shouldBeExpanded) {
+                        this.collapse();
+                    }
+
+                    this.expanded = shouldBeExpanded;
+                    break;
             }
         };
 
@@ -136,6 +148,8 @@ version: 0.0.3
             this.expandedOnElement = elem;
             this.reposition();
 
+            this.expanded = true;
+            this.setAttribute("expanded", "");
             var e = new Event("juicy-popover-expand");
             this.dispatchEvent(e);
         };
@@ -144,6 +158,8 @@ version: 0.0.3
             this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
             this.classList.remove("expanded");
 
+            this.expanded = false;
+            this.removeAttribute("expanded", null);
             var e = new Event("juicy-popover-collapse");
             this.dispatchEvent(e);
         };
