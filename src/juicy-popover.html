@@ -73,8 +73,12 @@ version: 0.0.3
                 set: function (val) {
                     if (disabled !== val) {
                         disabled = val;
-                        if (disabled) {
+                        if (val) {
                             this.expanded = false;
+                            this.setAttribute('disabled', '');
+                        }
+                        else {
+                            this.removeAttribute('disabled');
                         }
                     }
                 },
