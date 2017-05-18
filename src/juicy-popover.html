@@ -91,14 +91,14 @@ version: 0.0.3
             Object.defineProperty(this, 'expanded',{
                 set: function (val) {
                     if (expanded !== val) {
-                    expanded = val;
-                    if(val) {
-                        this.setAttribute('expanded', '');
-                        this._expand();
-                    } else {
-                        this.removeAttribute('expanded');
-                        this._collapse();
-                    }
+                        expanded = val;
+                        if(val) {
+                            this.setAttribute('expanded', '');
+                            this._expand();
+                        } else {
+                            this.removeAttribute('expanded');
+                            this._collapse();
+                        }
                     }
                 },
                 get: function(){
@@ -187,7 +187,7 @@ version: 0.0.3
         };
 
         JuicyPopoverElementPrototype.collapse = function () {
-                this.expanded = false;
+            this.expanded = false;
         };
 
         JuicyPopoverElementPrototype._collapse = function () {
