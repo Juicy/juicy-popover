@@ -86,6 +86,7 @@ version: 0.0.3
             var expanded = false;
             Object.defineProperty(this, 'expanded',{
                 set: function (val) {
+                    if (expanded !== val) {
                     expanded = val;
                     if(val) {
                         this.setAttribute('expanded', '');
@@ -93,6 +94,7 @@ version: 0.0.3
                     } else {
                         this.removeAttribute('expanded');
                         this._collapse();
+                    }
                     }
                 },
                 get: function(){
@@ -172,7 +174,6 @@ version: 0.0.3
             expandable.classList.add("expanded");
             this.classList.add("expanded");
 
-
             this.reposition();
 
             var e = new Event("juicy-popover-expand");
@@ -188,9 +189,6 @@ version: 0.0.3
         JuicyPopoverElementPrototype._collapse = function () {
             this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
             this.classList.remove("expanded");
-
-            this.expanded = false;
-            this.removeAttribute("expanded");
 
             var e = new Event("juicy-popover-collapse");
             this.dispatchEvent(e);
