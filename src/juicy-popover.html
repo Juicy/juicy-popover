@@ -54,6 +54,14 @@ version: 0.0.3
                 case "expandableSelector":
                     this.shadowRoot.querySelector("#expandable content").setAttribute("select", newVal || ".expandable");
                     break;
+
+                case "disabled":
+                    var shouldBeDisabled = (newVal !== null);
+                    if(!this.disabled && shouldBeDisabled) {
+                        this.collapse();
+                    }
+                    this.disabled = shouldBeDisabled;
+                    break;
             }
         };
 
@@ -118,6 +126,9 @@ version: 0.0.3
         };
 
         JuicyPopoverElementPrototype.expand = function (elem) {
+            if(this.disabled) {
+                return;
+            }
             var expandable = this.shadowRoot.querySelector("#expandable");
             expandable.classList.toggle("expanded");
             this.classList.toggle("expanded");
