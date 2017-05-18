@@ -45,7 +45,7 @@ Attribute            | Type           | Default       | Description
 `position`           | *String*       | `bottom left` | Position of expandable after button is pressed. Possible values: `top` or `bottom`, `left` or `right` (space separated)
 `handleSelector`     | *String*       | `.handle`     | Selector to find the handle child node in `<juicy-popover>` light DOM
 `expandableSelector` | *String*       | `.expandable` | Selector to find the expandable child node in `<juicy-popover>` light DOM
-`disabled`           | *Bool*         | `false`       | If true, element won't expand. If already expanded, it will collapse once set to true
+`disabled`           | *Bool*         | `false`       | If true, element won't expand. If already expanded, it will collapse once set to true. Synchronised with property `disabled`
 `expanded`           | *Bool*         | `false`       | Determines whether it's expanded. Synchronised with property `expanded` and event `expanded-changed`
 
 ## Methods

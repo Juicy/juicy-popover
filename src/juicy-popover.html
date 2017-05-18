@@ -57,9 +57,6 @@ version: 0.0.3
 
                 case "disabled":
                     var shouldBeDisabled = (newVal !== null);
-                    if(!this.disabled && shouldBeDisabled) {
-                        this.collapse();
-                    }
                     this.disabled = shouldBeDisabled;
                     break;
 
@@ -71,6 +68,21 @@ version: 0.0.3
         };
 
         JuicyPopoverElementPrototype.createdCallback = function () {
+            var disabled = false;
+            Object.defineProperty(this, 'disabled',{
+                set: function (val) {
+                    if (disabled !== val) {
+                        disabled = val;
+                        if (disabled) {
+                            this.expanded = false;
+                        }
+                    }
+                },
+                get: function(){
+                    return disabled;
+                }
+            });
+
             var expanded = false;
             Object.defineProperty(this, 'expanded',{
                 set: function (val) {
