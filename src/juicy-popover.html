@@ -65,19 +65,29 @@ version: 0.0.3
 
                 case "expanded":
                     var shouldBeExpanded = (newVal !== null);
-                    if(!this.expanded && shouldBeExpanded) {
-                        this.expand();
-                    }
-                    if(this.expanded && !shouldBeExpanded) {
-                        this.collapse();
-                    }
-
                     this.expanded = shouldBeExpanded;
                     break;
             }
         };
 
         JuicyPopoverElementPrototype.createdCallback = function () {
+            var expanded = false;
+            Object.defineProperty(this, 'expanded',{
+                set: function (val) {
+                    expanded = val;
+                    if(val) {
+                        this.setAttribute('expanded', '');
+                        this._expand();
+                    } else {
+                        this.removeAttribute('expanded');
+                        this._collapse();
+                    }
+                },
+                get: function(){
+                    return expanded;
+                }
+            });
+
             var t = importDoc.querySelector('#juicy-popover-template');
             var clone = document.importNode(t.content, true);
             clone.querySelector("#handle content").setAttribute("select", this.getAttribute("handleSelector") || ".handle");
@@ -138,29 +148,41 @@ version: 0.0.3
         };
 
         JuicyPopoverElementPrototype.expand = function (elem) {
-            if(this.disabled) {
+            this.expandedOnElement = elem;
+            this.expanded = true;
+        };
+
+        JuicyPopoverElementPrototype._expand = function () {
+            if (this.disabled) {
                 return;
             }
             var expandable = this.shadowRoot.querySelector("#expandable");
-            expandable.classList.toggle("expanded");
-            this.classList.toggle("expanded");
+            expandable.classList.add("expanded");
+            this.classList.add("expanded");
 
-            this.expandedOnElement = elem;
+
             this.reposition();
 
-            this.expanded = true;
-            this.setAttribute("expanded", "");
             var e = new Event("juicy-popover-expand");
+            this.dispatchEvent(e);
+            var e = new Event("expanded-changed");
             this.dispatchEvent(e);
         };
 
         JuicyPopoverElementPrototype.collapse = function () {
+                this.expanded = false;
+        };
+
+        JuicyPopoverElementPrototype._collapse = function () {
             this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
             this.classList.remove("expanded");
 
             this.expanded = false;
-            this.removeAttribute("expanded", null);
+            this.removeAttribute("expanded");
+
             var e = new Event("juicy-popover-collapse");
+            this.dispatchEvent(e);
+            var e = new Event("expanded-changed");
             this.dispatchEvent(e);
         };
 
