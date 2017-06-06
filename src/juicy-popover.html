@@ -23,10 +23,10 @@ version: 0.1.0
     </style>
     <div id="container">
         <span id="handle">
-            <content select="{{handleSelector}}"></content>
+            <slot select="{{handleSelector}}"></slot>
         </span>
         <span id="expandable">
-            <content select="{{expandableSelector}}"></content>
+            <slot select="{{expandableSelector}}"></slot>
         </span>
     </div>
 </template>
@@ -110,7 +110,14 @@ version: 0.1.0
             var clone = document.importNode(t.content, true);
             clone.querySelector("#handle content").setAttribute("select", this.getAttribute("handleSelector") || ".handle");
             clone.querySelector("#expandable content").setAttribute("select", this.getAttribute("expandableSelector") || ".expandable");
-            this.createShadowRoot().appendChild(clone);
+            var root;
+            if (this.attachShadow) {
+                root = this.attachShadow({ mode: 'open' });
+            } else {
+                root = this.createShadowRoot();
+            }
+
+            root.appendChild(clone);
 
             var ignore = false;
             var handle = this.shadowRoot.querySelector("#handle");
