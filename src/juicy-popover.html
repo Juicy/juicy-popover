@@ -24,9 +24,11 @@ version: 0.1.0
     <div id="container">
         <span id="handle">
             <slot name="handle"></slot>
+			<content select="[slot='handle']"></content>
         </span>
         <span id="expandable">
             <slot name="expendable"></slot>
+			<content select="[slot='expendable']"></content>
         </span>
     </div>
 </template>
