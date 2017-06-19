@@ -31,9 +31,9 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
 4. Start using it!
 
     ```html
-      <juicy-popover position="bottom left" handleSelector="button.handle" expandableSelector=".expandable">
-        <button class="handle">▼</button>
-        <div class="expandable">
+      <juicy-popover position="bottom left">
+        <button slot="handle">▼</button>
+        <div slot="expendable">
           You only see me when the button is pressed
       </juicy-popover>
     ```
