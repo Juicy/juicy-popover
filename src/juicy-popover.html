@@ -23,10 +23,12 @@ version: 0.1.0
     </style>
     <div id="container">
         <span id="handle">
-            <content select="{{handleSelector}}"></content>
+            <slot name="handle"></slot>
+            <content select="[slot='handle']"></content>
         </span>
         <span id="expandable">
-            <content select="{{expandableSelector}}"></content>
+            <slot name="expendable"></slot>
+            <content select="[slot='expendable']"></content>
         </span>
     </div>
 </template>
@@ -47,14 +49,6 @@ version: 0.1.0
 
         JuicyPopoverElementPrototype.attributeChangedCallback = function (attributeName, oldVal, newVal) {
             switch (attributeName) {
-                case "handleSelector":
-                    this.shadowRoot.querySelector("#handle content").setAttribute("select", newVal || ".handle");
-                    break;
-
-                case "expandableSelector":
-                    this.shadowRoot.querySelector("#expandable content").setAttribute("select", newVal || ".expandable");
-                    break;
-
                 case "disabled":
                     var shouldBeDisabled = (newVal !== null);
                     this.disabled = shouldBeDisabled;
@@ -108,9 +102,14 @@ version: 0.1.0
 
             var t = importDoc.querySelector('#juicy-popover-template');
             var clone = document.importNode(t.content, true);
-            clone.querySelector("#handle content").setAttribute("select", this.getAttribute("handleSelector") || ".handle");
-            clone.querySelector("#expandable content").setAttribute("select", this.getAttribute("expandableSelector") || ".expandable");
-            this.createShadowRoot().appendChild(clone);
+            var root;
+            if (this.attachShadow) {
+                root = this.attachShadow({ mode: 'open' });
+            } else {
+                root = this.createShadowRoot();
+            }
+
+            root.appendChild(clone);
 
             var ignore = false;
             var handle = this.shadowRoot.querySelector("#handle");

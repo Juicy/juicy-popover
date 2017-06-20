@@ -31,9 +31,9 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
 4. Start using it!
 
     ```html
-      <juicy-popover position="bottom left" handleSelector="button.handle" expandableSelector=".expandable">
-        <button class="handle">▼</button>
-        <div class="expandable">
+      <juicy-popover position="bottom left">
+        <button slot="handle">▼</button>
+        <div slot="expendable">
           You only see me when the button is pressed
       </juicy-popover>
     ```
@@ -43,10 +43,14 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
 Attribute            | Type           | Default       | Description
 ---                  | ---            | ---           | ---
 `position`           | *String*       | `bottom left` | Position of expandable after button is pressed. Possible values: `top` or `bottom`, `left` or `right` (space separated)
-`handleSelector`     | *String*       | `.handle`     | Selector to find the handle child node in `<juicy-popover>` light DOM
-`expandableSelector` | *String*       | `.expandable` | Selector to find the expandable child node in `<juicy-popover>` light DOM
 `disabled`           | *Bool*         | `false`       | If true, element won't expand. If already expanded, it will collapse once set to true. Synchronised with property `disabled`
 `expanded`           | *Bool*         | `false`       | Determines whether it's expanded. Synchronised with property `expanded` and event `expanded-changed`
+
+## Slots
+Name                 | Description
+---                  | ---
+`handle`             | Slot to set on the handle child node in `<juicy-popover>` light DOM
+`expandable`         | Slot to set on the expandable child node in `<juicy-popover>` light DOM
 
 ## Methods
 
