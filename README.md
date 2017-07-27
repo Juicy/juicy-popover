@@ -33,7 +33,7 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
     ```html
       <juicy-popover position="bottom left">
         <button slot="handle">▼</button>
-        <div slot="expendable">
+        <div slot="expandable">
           You only see me when the button is pressed
       </juicy-popover>
     ```
