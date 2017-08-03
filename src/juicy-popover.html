@@ -27,8 +27,8 @@ version: 1.1.0
             <content select="[slot='handle']"></content>
         </span>
         <span id="expandable">
-            <slot name="expendable"></slot>
-            <content select="[slot='expendable']"></content>
+            <slot id="deprecated-v1" name="expendable"></slot>
+            <content id="deprecated-v0" select="[slot='expendable']"></content>
             <slot name="expandable"></slot>
             <content select="[slot='expandable']"></content>
         </span>
@@ -146,6 +146,19 @@ version: 1.1.0
                     this.reposition();
                 }
             }.bind(this));
+            // This will work only in V1
+            this.shadowRoot.getElementById('deprecated-v1').addEventListener('slotchange', function(ev){
+                const slottedElements = ev.target.assignedNodes();
+                console.warn('Slot name `expendable` is deprecated, please use `expandable`!', slottedElements);
+            });
+        };
+        JuicyPopoverElementPrototype.attachedCallback = function () {
+            const slottedElements = this.attachShadow ?
+                                       this.shadowRoot.getElementById('deprecated-v1').assignedNodes() :
+                                       this.shadowRoot.getElementById('deprecated-v0').getDistributedNodes();
+            if (slottedElements.length) {
+               console.warn('Slot name `expendable` is deprecated, please use `expandable`!', slottedElements);
+            }
         };
 
         JuicyPopoverElementPrototype.reposition = function () {
