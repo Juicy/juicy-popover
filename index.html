@@ -104,9 +104,9 @@
 <div>Choose your favorite color:
   <input type="text" id="color" placeholder="&lt;color&gt;">
   <juicy-popover id="combo" handleSelector="button.handle" expandableSelector=".expandable">
-    <button class="handle">▼</button>
+    <button slot="handle">▼</button>
 
-    <div class="expandable">
+    <div slot="expandable">
       <button onclick="document.querySelector('#color').value = 'red'">Red</button>
       <br>
       <button onclick="document.querySelector('#color').value = 'green'">Green</button>
@@ -122,9 +122,9 @@
 
 <div>Change the appearance of the button:
   <juicy-popover position="right top" handleSelector=".handle" expandableSelector=".expandable">
-    <div class="handle">Background color ▶</div>
+    <div slot="handle">Background color ▶</div>
 
-    <div class="expandable">
+    <div slot="expandable">
       <button onclick="document.querySelector('div.handle').style.background= 'crimson'">Red</button>
       <br>
       <button onclick="document.querySelector('div.handle').style.background = 'green'">Green</button>
