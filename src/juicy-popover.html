@@ -161,9 +161,9 @@ version: 1.1.0
         };
 
         JuicyPopoverElementPrototype.reposition = function () {
-            var expandable = this.shadowRoot.querySelector("#expandable");
-            
-            [].forEach.call( expandable.children, function(el) {
+            var expandableChildren = this.shadowRoot.querySelector("#expandable").children;
+            var expandable = null;
+            [].forEach.call( expandableChildren, function(el) {
                 if(el.assignedNodes && el.assignedNodes()[0]){
                     expandable = el.assignedNodes()[0];
                 }
