@@ -188,7 +188,7 @@ version: 1.1.0
                 expandable.style.right = "0";
                 expandable.style.marginRight = "-" + elem.scrollHeight + "px";
             } else if(position.indexOf("auto") > -1){
-                if(window.innerWidth - elem.getBoundingClientRect().right < expandable.scrollWidth + (parseInt(expandable.style.marginRight) || 0)) {
+                if(window.innerWidth - elem.getBoundingClientRect().right < expandable.scrollWidth + (parseInt(expandable.style.marginRight, 10) || 0)) {
                     expandable.style.right = "0";
                     expandable.style.marginRight = "-" + elem.scrollHeight + "px";
                 } else {
