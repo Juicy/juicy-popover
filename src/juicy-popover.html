@@ -13,7 +13,6 @@ version: 1.1.0
             display: none;
             position: absolute;
             left: 0;
-            top: 20px;
             z-index: 999;
         }
 
@@ -163,23 +162,46 @@ version: 1.1.0
 
         JuicyPopoverElementPrototype.reposition = function () {
             var expandable = this.shadowRoot.querySelector("#expandable");
+            
+            [].forEach.call( expandable.children, function(el) {
+                if(el.assignedNodes && el.assignedNodes()[0]){
+                    expandable = el.assignedNodes()[0];
+                }
+                if(el.getDistributedNodes && el.getDistributedNodes()[0]){
+                    expandable = el.getDistributedNodes()[0];
+                }
+            });
+
             var elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
             var position = this.getAttribute("position") || "bottom left";
 
             if (position.indexOf("top") > -1) {
-                expandable.style.top = elem.offsetTop + "px";
+                expandable.style.top = "-" + expandable.scrollHeight + "px";
             } else {
-                expandable.style.top = elem.offsetTop + elem.offsetHeight + "px";
+                expandable.style.top = "";
             }
 
             if (position.indexOf("right") > -1) {
-                expandable.style.left = elem.offsetLeft + elem.offsetWidth + "px";
-            } else {
-                expandable.style.left = elem.offsetLeft + "px";
+                expandable.style.right = "";
+                expandable.style.marginRight = "";
+            } else if(position.indexOf("left") > -1){
+                expandable.style.right = "0";
+                expandable.style.marginRight = "-" + elem.scrollHeight + "px";
+            } else if(position.indexOf("auto") > -1){
+                if(window.innerWidth - elem.getBoundingClientRect().right < expandable.scrollWidth + expandable.style.marginRight) {
+                    expandable.style.right = "0";
+                    expandable.style.marginRight = "-" + elem.scrollHeight + "px";
+                } else {
+                    expandable.style.right = "";
+                    expandable.style.marginRight = "";
+                }
             }
         };
 
         JuicyPopoverElementPrototype.expand = function (elem) {
+            if (!elem.assignedSlot) {
+                elem = elem.parentElement;
+            }
             this.expandedOnElement = elem;
             this.expanded = true;
         };
