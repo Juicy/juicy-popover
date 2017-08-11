@@ -161,36 +161,37 @@ version: 1.1.0
         };
 
         JuicyPopoverElementPrototype.reposition = function () {
-            var expandableChildren = this.shadowRoot.querySelector("#expandable").children;
-            var expandable = null;
-            [].forEach.call( expandableChildren, function(el) {
-                if(el.assignedNodes && el.assignedNodes()[0]){
-                    expandable = el.assignedNodes()[0];
-                }
-                if(el.getDistributedNodes && el.getDistributedNodes()[0]){
-                    expandable = el.getDistributedNodes()[0];
-                }
-            });
-
+            var expandable = this.shadowRoot.querySelector("#expandable");
+            if(!expandable.clientWidth) {
+                expandable = null;
+                [].forEach.call( this.shadowRoot.querySelector("#expandable").children, function(el) {
+                    if(el.assignedNodes && el.assignedNodes()[0]){
+                        expandable = el.assignedNodes()[0];
+                    }
+                    if(el.getDistributedNodes && el.getDistributedNodes()[0]){
+                        expandable = el.getDistributedNodes()[0];
+                    }
+                });
+            }
             var elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
             var position = this.getAttribute("position") || "bottom left";
 
             if (position.indexOf("top") > -1) {
-                expandable.style.top = "-" + expandable.scrollHeight + "px";
+                expandable.style.top = (elem.offsetTop || elem.clientTop) - expandable.offsetHeight  + "px";
             } else {
-                expandable.style.top = "";
+                expandable.style.top = (elem.offsetTop || elem.clientTop) + (elem.offsetHeight || elem.clientHeight) + "px";;
             }
-
+    
             if (position.indexOf("right") > -1) {
                 expandable.style.right = "";
                 expandable.style.marginRight = "";
             } else if(position.indexOf("left") > -1){
                 expandable.style.right = "0";
-                expandable.style.marginRight = "-" + elem.scrollHeight + "px";
+                expandable.style.marginRight = "-" + elem.clientWidth + "px";
             } else if(position.indexOf("auto") > -1){
                 if(window.innerWidth - elem.getBoundingClientRect().right < expandable.scrollWidth + (parseInt(expandable.style.marginRight, 10) || 0)) {
                     expandable.style.right = "0";
-                    expandable.style.marginRight = "-" + elem.scrollHeight + "px";
+                    expandable.style.marginRight = "-" + elem.clientWidth + "px";
                 } else {
                     expandable.style.right = "";
                     expandable.style.marginRight = "";
