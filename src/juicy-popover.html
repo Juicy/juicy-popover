@@ -162,39 +162,51 @@ version: 1.1.0
 
         JuicyPopoverElementPrototype.reposition = function () {
             var expandable = this.shadowRoot.querySelector("#expandable");
-            if(!expandable.clientWidth) {
-                expandable = null;
-                [].forEach.call( this.shadowRoot.querySelector("#expandable").children, function(el) {
-                    if(el.assignedNodes && el.assignedNodes()[0]){
-                        expandable = el.assignedNodes()[0];
-                    }
-                    if(el.getDistributedNodes && el.getDistributedNodes()[0]){
-                        expandable = el.getDistributedNodes()[0];
-                    }
-                });
+            var expandableSlot = null;
+            [].forEach.call( expandable.children, function(el) {
+                if(el.assignedNodes && el.assignedNodes()[0]){
+                    expandableSlot = el.assignedNodes()[0];
+                }
+                if(el.getDistributedNodes && el.getDistributedNodes()[0]){
+                    expandableSlot = el.getDistributedNodes()[0];
+                }
+            });
+            var styleTarget = expandable;
+            var nonStyleTarget = expandableSlot;
+            if (!expandable.clientWidth) {
+                styleTarget = expandableSlot;
+                nonStyleTarget = expandable;
             }
             var elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
+            while (!(elem.getAttribute('slot') && elem.getAttribute('slot') == "handle")) {
+                if(elem.parentElement) {
+                    elem = elem.parentElement;
+                } else {
+                    elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
+                    break;
+                }
+            }
             var position = this.getAttribute("position") || "bottom left";
 
             if (position.indexOf("top") > -1) {
-                expandable.style.top = (elem.offsetTop || elem.clientTop) - expandable.offsetHeight  + "px";
+                styleTarget.style.top = elem.offsetTop - styleTarget.offsetHeight + "px";
             } else {
-                expandable.style.top = (elem.offsetTop || elem.clientTop) + (elem.offsetHeight || elem.clientHeight) + "px";;
+                styleTarget.style.top = elem.offsetTop + elem.offsetHeight - nonStyleTarget.offsetTop + "px";
             }
     
             if (position.indexOf("right") > -1) {
-                expandable.style.right = "";
-                expandable.style.marginRight = "";
+                styleTarget.style.right = "";
+                styleTarget.style.marginRight = "";
             } else if(position.indexOf("left") > -1){
-                expandable.style.right = "0";
-                expandable.style.marginRight = "-" + elem.clientWidth + "px";
+                styleTarget.style.right = "0";
+                styleTarget.style.marginRight = "-" + elem.clientWidth + "px";
             } else if(position.indexOf("auto") > -1){
-                if(window.innerWidth - elem.getBoundingClientRect().right < expandable.scrollWidth + (parseInt(expandable.style.marginRight, 10) || 0)) {
-                    expandable.style.right = "0";
-                    expandable.style.marginRight = "-" + elem.clientWidth + "px";
+                if(window.innerWidth - elem.getBoundingClientRect().right < styleTarget.offsetWidth + (parseInt(styleTarget.style.marginRight, 10) || 0)) {
+                    styleTarget.style.right = "0";
+                    styleTarget.style.marginRight = "-" + elem.clientWidth + "px";
                 } else {
-                    expandable.style.right = "";
-                    expandable.style.marginRight = "";
+                    styleTarget.style.right = "";
+                    styleTarget.style.marginRight = "";
                 }
             }
         };
