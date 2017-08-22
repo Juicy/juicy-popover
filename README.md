@@ -19,13 +19,13 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
 2. Import Web Components' polyfill (optional, allows to run it in old browsers):
 
     ```html
-    <script src="//cdn.jsdelivr.net/webcomponentsjs/0.5.5/webcomponents.min.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     ```
 
 3. Import Custom Element:
 
     ```html
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="bower_components/juicy-popover/src/juicy-popover.html">
     ```
 
 4. Start using it!
