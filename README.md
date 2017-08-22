@@ -25,7 +25,7 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
 3. Import Custom Element:
 
     ```html
-    <link rel="import" href="bower_components/juicy-popover/src/juicy-popover.html">
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     ```
 
 4. Start using it!
