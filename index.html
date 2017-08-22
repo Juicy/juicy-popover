@@ -117,16 +117,16 @@
 
 <div>Change the appearance of the button:
   <juicy-popover position="right top">
-    <div id="bkdcolor" slot="handle">Background color ▶</div>
+    <div slot="handle">Background color ▶</div>
 
     <div slot="expandable">
-      <button onclick="document.querySelector('#bkdcolor').style.background= 'crimson'">Red</button>
+      <button onclick="document.querySelector('div[slot=handle]').style.background= 'crimson'">Red</button>
       <br>
-      <button onclick="document.querySelector('#bkdcolor').style.background = 'green'">Green</button>
+      <button onclick="document.querySelector('div[slot=handle]').style.background = 'green'">Green</button>
       <br>
-      <button onclick="document.querySelector('#bkdcolor').style.background = '#111'">Black</button>
+      <button onclick="document.querySelector('div[slot=handle]').style.background = '#111'">Black</button>
       <br>
-      <button onclick="document.querySelector('#bkdcolor').style.background = '#6496c8'">Blue</button>
+      <button onclick="document.querySelector('div[slot=handle]').style.background = '#6496c8'">Blue</button>
     </div>
   </juicy-popover>
 </div>
