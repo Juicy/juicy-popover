@@ -36,186 +36,184 @@ version: 1.1.0
 </template>
 
 <script>
-    (function (global) {
-        var importDoc;
-        if (document._currentScript) {
+    var currentScr = document._currentScript || document.currentScript;
+    window.addEventListener('WebComponentsReady', function(e) {
+        (function (global) {
+            var importDoc;
             //@see http://www.polymer-project.org/platform/html-imports.html
             //@see https://groups.google.com/d/topic/polymer-dev/4UKty9tb1-s/discussion
-            importDoc = document._currentScript.ownerDocument;
-        }
-        else {
-            importDoc = document.currentScript.ownerDocument;
-        }
+            importDoc = currentScr.ownerDocument;
 
-        var JuicyPopoverElementPrototype = Object.create(HTMLElement.prototype);
+            var JuicyPopoverElementPrototype = Object.create(HTMLElement.prototype);
 
-        JuicyPopoverElementPrototype.attributeChangedCallback = function (attributeName, oldVal, newVal) {
-            switch (attributeName) {
-                case "disabled":
-                    var shouldBeDisabled = (newVal !== null);
-                    this.disabled = shouldBeDisabled;
-                    break;
+            JuicyPopoverElementPrototype.attributeChangedCallback = function (attributeName, oldVal, newVal) {
+                switch (attributeName) {
+                    case "disabled":
+                        var shouldBeDisabled = (newVal !== null);
+                        this.disabled = shouldBeDisabled;
+                        break;
 
-                case "expanded":
-                    var shouldBeExpanded = (newVal !== null);
-                    this.expanded = shouldBeExpanded;
-                    break;
-            }
-        };
-
-        JuicyPopoverElementPrototype.createdCallback = function () {
-            var disabled = false;
-            Object.defineProperty(this, 'disabled',{
-                set: function (val) {
-                    if (disabled !== val) {
-                        disabled = val;
-                        if (val) {
-                            this.expanded = false;
-                            this.setAttribute('disabled', '');
-                        }
-                        else {
-                            this.removeAttribute('disabled');
-                        }
-                    }
-                },
-                get: function(){
-                    return disabled;
+                    case "expanded":
+                        var shouldBeExpanded = (newVal !== null);
+                        this.expanded = shouldBeExpanded;
+                        break;
                 }
-            });
+            };
 
-            var expanded = false;
-            Object.defineProperty(this, 'expanded',{
-                set: function (val) {
-                    if (expanded !== val) {
-                        expanded = val;
-                        if(val) {
-                            this.setAttribute('expanded', '');
-                            this._expand();
-                        } else {
-                            this.removeAttribute('expanded');
-                            this._collapse();
+            JuicyPopoverElementPrototype.createdCallback = function () {
+                var disabled = false;
+                Object.defineProperty(this, 'disabled',{
+                    set: function (val) {
+                        if (disabled !== val) {
+                            disabled = val;
+                            if (val) {
+                                this.expanded = false;
+                                this.setAttribute('disabled', '');
+                            }
+                            else {
+                                this.removeAttribute('disabled');
+                            }
                         }
+                    },
+                    get: function(){
+                        return disabled;
                     }
-                },
-                get: function(){
-                    return expanded;
+                });
+
+                var expanded = false;
+                Object.defineProperty(this, 'expanded',{
+                    set: function (val) {
+                        if (expanded !== val) {
+                            expanded = val;
+                            if(val) {
+                                this.setAttribute('expanded', '');
+                                this._expand();
+                            } else {
+                                this.removeAttribute('expanded');
+                                this._collapse();
+                            }
+                        }
+                    },
+                    get: function(){
+                        return expanded;
+                    }
+                });
+
+                var t = importDoc.querySelector('#juicy-popover-template');
+                var clone = document.importNode(t.content, true);
+                var root;
+                if (this.attachShadow) {
+                    root = this.attachShadow({ mode: 'open' });
+                } else {
+                    root = this.createShadowRoot();
                 }
-            });
 
-            var t = importDoc.querySelector('#juicy-popover-template');
-            var clone = document.importNode(t.content, true);
-            var root;
-            if (this.attachShadow) {
-                root = this.attachShadow({ mode: 'open' });
-            } else {
-                root = this.createShadowRoot();
-            }
+                root.appendChild(clone);
 
-            root.appendChild(clone);
+                var ignore = false;
+                var handle = this.shadowRoot.querySelector("#handle");
+                var expandable = this.shadowRoot.querySelector("#expandable");
 
-            var ignore = false;
-            var handle = this.shadowRoot.querySelector("#handle");
-            var expandable = this.shadowRoot.querySelector("#expandable");
+                handle.addEventListener("mousedown", function (ev) {
+                    if (!expandable.classList.contains("expanded")) {
+                        this.expand(ev.target);
+                        ignore = true;
+                    }
+                }.bind(this));
 
-            handle.addEventListener("mousedown", function (ev) {
-                if (!expandable.classList.contains("expanded")) {
-                    this.expand(ev.target);
+                handle.addEventListener("mouseup", function (ev) {
+                    if (ev.target.nodeName == "INPUT") {
+                        ignore = true; //just a friendly feature - don't collapse the expandable if clicked on a handler which is an input
+                    }
+                }.bind(this));
+
+                expandable.addEventListener("mousedown", function (ev) {
                     ignore = true;
-                }
-            }.bind(this));
+                }.bind(this));
 
-            handle.addEventListener("mouseup", function (ev) {
-                if (ev.target.nodeName == "INPUT") {
-                    ignore = true; //just a friendly feature - don't collapse the expandable if clicked on a handler which is an input
-                }
-            }.bind(this));
+                window.addEventListener("mouseup", function (ev) {
+                    if (!ignore && expandable.classList.contains("expanded")) {
+                        this.collapse();
+                    }
+                    ignore = false;
+                }.bind(this));
 
-            expandable.addEventListener("mousedown", function (ev) {
-                ignore = true;
-            }.bind(this));
-
-            window.addEventListener("mouseup", function (ev) {
-                if (!ignore && expandable.classList.contains("expanded")) {
-                    this.collapse();
+                window.addEventListener("resize", function (e) {
+                    if (expandable.classList.contains("expanded")) {
+                        this.reposition();
+                    }
+                }.bind(this));
+                // This will work only in V1
+                this.shadowRoot.getElementById('deprecated-v1').addEventListener('slotchange', function(ev){
+                    const slottedElements = ev.target.assignedNodes();
+                    console.warn('Slot name `expendable` is deprecated, please use `expandable`!', slottedElements);
+                });
+            };
+            JuicyPopoverElementPrototype.attachedCallback = function () {
+                const slottedElements = this.attachShadow ?
+                                           this.shadowRoot.getElementById('deprecated-v1').assignedNodes() :
+                                           this.shadowRoot.getElementById('deprecated-v0').getDistributedNodes();
+                if (slottedElements.length) {
+                   console.warn('Slot name `expendable` is deprecated, please use `expandable`!', slottedElements);
                 }
-                ignore = false;
-            }.bind(this));
+            };
 
-            window.addEventListener("resize", function (e) {
-                if (expandable.classList.contains("expanded")) {
-                    this.reposition();
+            JuicyPopoverElementPrototype.reposition = function () {
+                var expandable = this.shadowRoot.querySelector("#expandable");
+                var elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
+                var position = this.getAttribute("position") || "bottom left";
+
+                if (position.indexOf("top") > -1) {
+                    expandable.style.top = elem.offsetTop + "px";
+                } else {
+                    expandable.style.top = elem.offsetTop + elem.offsetHeight + "px";
                 }
-            }.bind(this));
-            // This will work only in V1
-            this.shadowRoot.getElementById('deprecated-v1').addEventListener('slotchange', function(ev){
-                const slottedElements = ev.target.assignedNodes();
-                console.warn('Slot name `expendable` is deprecated, please use `expandable`!', slottedElements);
+
+                if (position.indexOf("right") > -1) {
+                    expandable.style.left = elem.offsetLeft + elem.offsetWidth + "px";
+                } else {
+                    expandable.style.left = elem.offsetLeft + "px";
+                }
+            };
+
+            JuicyPopoverElementPrototype.expand = function (elem) {
+                this.expandedOnElement = elem;
+                this.expanded = true;
+            };
+
+            JuicyPopoverElementPrototype._expand = function () {
+                if (this.disabled) {
+                    return;
+                }
+                var expandable = this.shadowRoot.querySelector("#expandable");
+                expandable.classList.add("expanded");
+                this.classList.add("expanded");
+
+                this.reposition();
+
+                var e = new Event("juicy-popover-expand");
+                this.dispatchEvent(e);
+                var e = new Event("expanded-changed");
+                this.dispatchEvent(e);
+            };
+
+            JuicyPopoverElementPrototype.collapse = function () {
+                this.expanded = false;
+            };
+
+            JuicyPopoverElementPrototype._collapse = function () {
+                this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
+                this.classList.remove("expanded");
+
+                var e = new Event("juicy-popover-collapse");
+                this.dispatchEvent(e);
+                var e = new Event("expanded-changed");
+                this.dispatchEvent(e);
+            };
+            //window.customElements.define
+            global.JuicyPopoverElement = document.registerElement('juicy-popover', {
+                prototype: JuicyPopoverElementPrototype
             });
-        };
-        JuicyPopoverElementPrototype.attachedCallback = function () {
-            const slottedElements = this.attachShadow ?
-                                       this.shadowRoot.getElementById('deprecated-v1').assignedNodes() :
-                                       this.shadowRoot.getElementById('deprecated-v0').getDistributedNodes();
-            if (slottedElements.length) {
-               console.warn('Slot name `expendable` is deprecated, please use `expandable`!', slottedElements);
-            }
-        };
-
-        JuicyPopoverElementPrototype.reposition = function () {
-            var expandable = this.shadowRoot.querySelector("#expandable");
-            var elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
-            var position = this.getAttribute("position") || "bottom left";
-
-            if (position.indexOf("top") > -1) {
-                expandable.style.top = elem.offsetTop + "px";
-            } else {
-                expandable.style.top = elem.offsetTop + elem.offsetHeight + "px";
-            }
-
-            if (position.indexOf("right") > -1) {
-                expandable.style.left = elem.offsetLeft + elem.offsetWidth + "px";
-            } else {
-                expandable.style.left = elem.offsetLeft + "px";
-            }
-        };
-
-        JuicyPopoverElementPrototype.expand = function (elem) {
-            this.expandedOnElement = elem;
-            this.expanded = true;
-        };
-
-        JuicyPopoverElementPrototype._expand = function () {
-            if (this.disabled) {
-                return;
-            }
-            var expandable = this.shadowRoot.querySelector("#expandable");
-            expandable.classList.add("expanded");
-            this.classList.add("expanded");
-
-            this.reposition();
-
-            var e = new Event("juicy-popover-expand");
-            this.dispatchEvent(e);
-            var e = new Event("expanded-changed");
-            this.dispatchEvent(e);
-        };
-
-        JuicyPopoverElementPrototype.collapse = function () {
-            this.expanded = false;
-        };
-
-        JuicyPopoverElementPrototype._collapse = function () {
-            this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
-            this.classList.remove("expanded");
-
-            var e = new Event("juicy-popover-collapse");
-            this.dispatchEvent(e);
-            var e = new Event("expanded-changed");
-            this.dispatchEvent(e);
-        };
-
-        global.JuicyPopoverElement = document.registerElement('juicy-popover', {
-            prototype: JuicyPopoverElementPrototype
-        });
-    })(window);
+        })(window);
+    });
 </script>

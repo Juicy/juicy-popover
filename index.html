@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="http://juicy.github.io/github-markdown-css/github-markdown.css">
 
     <!-- Importing Web Component's Polyfill -->
-    <script src="../webcomponentsjs/webcomponents.js"></script>
-
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../document-register-element/build/document-register-element.js"></script>
   <!-- Importing Custom Elements -->
   <link rel="import" href="src/juicy-popover.html">
 
@@ -25,35 +25,30 @@
       margin-right: 0;
     }
 
-    juicy-popover button.handle {
+    juicy-popover button[slot=handle] {
       color: #fff;
       text-shadow: -2px 2px #346392;
       background-color: #6496c8;
-      background-image: -webkit-gradient(linear, left top, left bottom, from(#6496c8), to(#346392));
-      background-image: -webkit-linear-gradient(top, #6496c8, #346392);
-      background-image: -moz-linear-gradient(top, #6496c8, #346392);
-      background-image: -o-linear-gradient(top, #6496c8, #346392);
-      background-image: -ms-linear-gradient(top, #6496c8, #346392);
       background-image: linear-gradient(top, #6496c8, #346392);
       box-shadow: inset 0 0 0 1px #27496d;
       border: none;
       border-radius: 2px;
     }
 
-    juicy-popover button.handle:hover {
+    juicy-popover button[slot=handle]:hover {
       box-shadow: inset 0 0 0 1px #27496d, 0 0 5px #193047;
     }
 
-    juicy-popover button.handle:active,
-    juicy-popover.expanded button.handle {
+    juicy-popover button[slot=handle]:active,
+    juicy-popover.expanded button[slot=handle] {
       box-shadow: inset 0 0 0 1px #27496d, inset 0 5px 30px #193047;
     }
 
-    #combo button.handle {
+    #combo button[slot=handle] {
       margin: -28px;
     }
 
-    juicy-popover div.handle {
+    juicy-popover div[slot=handle] {
       font-family: sans-serif;
       display: inline-block;
       cursor: default;
@@ -67,24 +62,24 @@
       padding: 2px;
     }
 
-    juicy-popover div.handle:hover {
+    juicy-popover div[slot=handle]:hover {
       box-shadow: inset 0 0 0 1px #27496d, 0 0 5px #193047;
     }
 
-    juicy-popover div.handle:active,
-    juicy-popover.expanded div.handle {
+    juicy-popover div[slot=handle]:active,
+    juicy-popover.expanded div[slot=handle] {
       box-shadow: inset 0 0 0 1px #27496d, inset 0 5px 30px #193047;
     }
 
-    #combo button.handle {
-      margin: -28px;
-    }
-
-    .expandable {
+    [slot=expandable] {
       background: #fff;
       border: 1px solid rgba(0,0,0,.2);
       box-shadow: 0 5px 10px rgba(0,0,0,.2);
       padding: 5px;
+    }
+    
+    body > div {
+      display: flex;  
     }
   </style>
 </head>
@@ -103,7 +98,7 @@
 
 <div>Choose your favorite color:
   <input type="text" id="color" placeholder="&lt;color&gt;">
-  <juicy-popover id="combo" handleSelector="button.handle" expandableSelector=".expandable">
+  <juicy-popover id="combo">
     <button slot="handle">▼</button>
 
     <div slot="expandable">
@@ -121,17 +116,17 @@
 <h2>Sample expandable menu</h2>
 
 <div>Change the appearance of the button:
-  <juicy-popover position="right top" handleSelector=".handle" expandableSelector=".expandable">
+  <juicy-popover position="right top">
     <div slot="handle">Background color ▶</div>
 
     <div slot="expandable">
-      <button onclick="document.querySelector('div.handle').style.background= 'crimson'">Red</button>
+      <button onclick="document.querySelector('div[slot=handle]').style.background= 'crimson'">Red</button>
       <br>
-      <button onclick="document.querySelector('div.handle').style.background = 'green'">Green</button>
+      <button onclick="document.querySelector('div[slot=handle]').style.background = 'green'">Green</button>
       <br>
-      <button onclick="document.querySelector('div.handle').style.background = '#111'">Black</button>
+      <button onclick="document.querySelector('div[slot=handle]').style.background = '#111'">Black</button>
       <br>
-      <button onclick="document.querySelector('div.handle').style.background = '#6496c8'">Blue</button>
+      <button onclick="document.querySelector('div[slot=handle]').style.background = '#6496c8'">Blue</button>
     </div>
   </juicy-popover>
 </div>
