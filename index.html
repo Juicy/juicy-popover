@@ -21,44 +21,56 @@
       padding: 2em;
     }
 
+    /*#combo example*/
+
     #color {
       margin-right: 0;
+      height: 17px;
     }
 
-    juicy-popover button.handle {
+    #combo {
+      display: inline-block;
+    }
+
+    #combo button[slot="handle"] {
       color: #fff;
-      text-shadow: -2px 2px #346392;
+      text-shadow: -2px 2px rgba(0, 0, 0, .2);
       background-color: #6496c8;
-      background-image: -webkit-gradient(linear, left top, left bottom, from(#6496c8), to(#346392));
-      background-image: -webkit-linear-gradient(top, #6496c8, #346392);
-      background-image: -moz-linear-gradient(top, #6496c8, #346392);
-      background-image: -o-linear-gradient(top, #6496c8, #346392);
-      background-image: -ms-linear-gradient(top, #6496c8, #346392);
-      background-image: linear-gradient(top, #6496c8, #346392);
       box-shadow: inset 0 0 0 1px #27496d;
       border: none;
       border-radius: 2px;
+      margin-left: -28px;
+      padding: 1px 4px;
     }
 
-    juicy-popover button.handle:hover {
+    #combo button[slot="handle"]:hover {
       box-shadow: inset 0 0 0 1px #27496d, 0 0 5px #193047;
     }
 
-    juicy-popover button.handle:active,
-    juicy-popover.expanded button.handle {
+    #combo button[slot="handle"]:active,
+    #combo.expanded button[slot="handle"] {
       box-shadow: inset 0 0 0 1px #27496d, inset 0 5px 30px #193047;
     }
 
-    #combo button.handle {
-      margin: -28px;
+    #combo div[slot="expandable"] {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, .2);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+      padding: 5px;
     }
 
-    juicy-popover div.handle {
+    /*#rightexpand example*/
+
+    #rightexpand {
+      display: inline-block;
+    }
+
+    #rightexpand div[slot="handle"] {
       font-family: sans-serif;
       display: inline-block;
       cursor: default;
       color: #fff;
-      text-shadow: -2px 2px #346392;
+      text-shadow: -2px 2px rgba(0, 0, 0, .2);
       background-color: #6496c8;
       box-shadow: inset 0 0 0 1px #27496d;
       border: none;
@@ -67,23 +79,19 @@
       padding: 2px;
     }
 
-    juicy-popover div.handle:hover {
+    #rightexpand button[slot="handle"]:hover {
       box-shadow: inset 0 0 0 1px #27496d, 0 0 5px #193047;
     }
 
-    juicy-popover div.handle:active,
-    juicy-popover.expanded div.handle {
+    #rightexpand button[slot="handle"]:active,
+    #rightexpand.expanded button[slot="handle"] {
       box-shadow: inset 0 0 0 1px #27496d, inset 0 5px 30px #193047;
     }
 
-    #combo button.handle {
-      margin: -28px;
-    }
-
-    .expandable {
+    #rightexpand div[slot="expandable"] {
       background: #fff;
-      border: 1px solid rgba(0,0,0,.2);
-      box-shadow: 0 5px 10px rgba(0,0,0,.2);
+      border: 1px solid rgba(0, 0, 0, .2);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
       padding: 5px;
     }
   </style>
@@ -103,7 +111,7 @@
 
 <div>Choose your favorite color:
   <input type="text" id="color" placeholder="&lt;color&gt;">
-  <juicy-popover id="combo" handleSelector="button.handle" expandableSelector=".expandable">
+  <juicy-popover id="combo">
     <button slot="handle">▼</button>
 
     <div slot="expandable">
@@ -121,17 +129,17 @@
 <h2>Sample expandable menu</h2>
 
 <div>Change the appearance of the button:
-  <juicy-popover position="right top" handleSelector=".handle" expandableSelector=".expandable">
+  <juicy-popover id="rightexpand" position="right top">
     <div slot="handle">Background color ▶</div>
 
     <div slot="expandable">
-      <button onclick="document.querySelector('div.handle').style.background= 'crimson'">Red</button>
+      <button onclick="document.querySelector('#rightexpand [slot=\'handle\']').style.background = 'crimson'">Red</button>
       <br>
-      <button onclick="document.querySelector('div.handle').style.background = 'green'">Green</button>
+      <button onclick="document.querySelector('#rightexpand [slot=\'handle\']').style.background = 'green'">Green</button>
       <br>
-      <button onclick="document.querySelector('div.handle').style.background = '#111'">Black</button>
+      <button onclick="document.querySelector('#rightexpand [slot=\'handle\']').style.background = '#111'">Black</button>
       <br>
-      <button onclick="document.querySelector('div.handle').style.background = '#6496c8'">Blue</button>
+      <button onclick="document.querySelector('#rightexpand [slot=\'handle\']').style.background = 'blue'">Blue</button>
     </div>
   </juicy-popover>
 </div>
