@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <title>&lt;juicy-popover&gt;</title>
 
-    <link rel="stylesheet" href="http://juicy.github.io/github-markdown-css/github-markdown.css">
+  <link rel="stylesheet" href="http://juicy.github.io/github-markdown-css/github-markdown.css">
 
-    <!-- Importing Web Component's Polyfill -->
-    <script src="../webcomponentsjs/webcomponents.js"></script>
+  <!-- Importing Web Component's Polyfill -->
+  <script src="../webcomponentsjs/webcomponents.js"></script>
 
   <!-- Importing Custom Elements -->
   <link rel="import" href="src/juicy-popover.html">
@@ -19,6 +19,16 @@
 
     body {
       padding: 2em;
+      font-family: sans-serif;
+    }
+
+    h3 {
+      margin-bottom: 0.2em;
+      font-weight: normal;
+    }
+
+    code {
+      font-family: Consolas, monospace;
     }
 
     /*#combo example*/
@@ -48,27 +58,29 @@
     }
 
     #combo button[slot="handle"]:active,
-    #combo.expanded button[slot="handle"] {
+    #combo[expanded] button[slot="handle"] {
       box-shadow: inset 0 0 0 1px #27496d, inset 0 5px 30px #193047;
     }
 
     #combo div[slot="expandable"] {
+      display: none;
       background: #fff;
       border: 1px solid rgba(0, 0, 0, .2);
       box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
       padding: 5px;
     }
 
-    /*#rightexpand example*/
-
-    #rightexpand {
-      display: inline-block;
+    #combo[expanded] div[slot="expandable"] {
+      display: block;
     }
 
+
+    /*#rightexpand example*/
+
     #rightexpand div[slot="handle"] {
-      font-family: sans-serif;
       display: inline-block;
       cursor: default;
+      margin-left: 200px;
       color: #fff;
       text-shadow: -2px 2px rgba(0, 0, 0, .2);
       background-color: #6496c8;
@@ -79,20 +91,17 @@
       padding: 2px;
     }
 
-    #rightexpand button[slot="handle"]:hover {
-      box-shadow: inset 0 0 0 1px #27496d, 0 0 5px #193047;
-    }
-
-    #rightexpand button[slot="handle"]:active,
-    #rightexpand.expanded button[slot="handle"] {
-      box-shadow: inset 0 0 0 1px #27496d, inset 0 5px 30px #193047;
-    }
-
     #rightexpand div[slot="expandable"] {
+      display: none;
       background: #fff;
       border: 1px solid rgba(0, 0, 0, .2);
       box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
       padding: 5px;
+      width: 200px;
+    }
+
+    #rightexpand[expanded] div[slot="expandable"] {
+      display: block;
     }
   </style>
 </head>
@@ -107,7 +116,7 @@
 
 <p>See <a href="https://github.com/Juicy/juicy-popover">README.md</a> for docs</p>
 
-<h2>Sample combo box</h2>
+<h2>Sample combo box (automatic position)</h2>
 
 <div>Choose your favorite color:
   <input type="text" id="color" placeholder="&lt;color&gt;">
@@ -128,21 +137,74 @@
 
 <h2>Sample expandable menu</h2>
 
-<div>Change the appearance of the button:
-  <juicy-popover id="rightexpand" position="right top">
-    <div slot="handle">Background color ▶</div>
+<h3><code>position="bottom left, beforetop left"</code> (fallback positions separated by a comma)</h3>
+<juicy-popover id="rightexpand" position="bottom left, beforetop left">
+  <div slot="handle">Expand ▶</div>
+  <div slot="expandable">Expanded content</div>
+</juicy-popover>
 
-    <div slot="expandable">
-      <button onclick="document.querySelector('#rightexpand [slot=\'handle\']').style.background = 'crimson'">Red</button>
-      <br>
-      <button onclick="document.querySelector('#rightexpand [slot=\'handle\']').style.background = 'green'">Green</button>
-      <br>
-      <button onclick="document.querySelector('#rightexpand [slot=\'handle\']').style.background = '#111'">Black</button>
-      <br>
-      <button onclick="document.querySelector('#rightexpand [slot=\'handle\']').style.background = 'blue'">Blue</button>
-    </div>
-  </juicy-popover>
-</div>
+<h3><code>position="top beforeleft"</code></h3>
+
+<juicy-popover id="rightexpand" position="top beforeleft">
+  <div slot="handle">Expand ▶</div>
+  <div slot="expandable">Expanded content</div>
+</juicy-popover>
+
+<h3><code>position="top left"</code></h3>
+
+<juicy-popover id="rightexpand" position="top left">
+  <div slot="handle">Expand ▶</div>
+  <div slot="expandable">Expanded content</div>
+</juicy-popover>
+
+<h3><code>position="top right"</code></h3>
+
+<juicy-popover id="rightexpand" position="top right">
+  <div slot="handle">Expand ▶</div>
+  <div slot="expandable">Expanded content</div>
+</juicy-popover>
+
+<h3><code>position="beforetop beforeleft"</code></h3>
+
+<juicy-popover id="rightexpand" position="beforetop beforeleft">
+  <div slot="handle">Expand ▶</div>
+  <div slot="expandable">Expanded content</div>
+</juicy-popover>
+
+<h3><code>position="beforetop left"</code></h3>
+
+<juicy-popover id="rightexpand" position="beforetop left">
+  <div slot="handle">Expand ▶</div>
+  <div slot="expandable">Expanded content</div>
+</juicy-popover>
+
+<h3><code>position="beforetop right"</code></h3>
+
+<juicy-popover id="rightexpand" position="beforetop right">
+  <div slot="handle">Expand ▶</div>
+  <div slot="expandable">Expanded content</div>
+</juicy-popover>
+
+<h3><code>position="bottom beforeleft"</code></h3>
+
+<juicy-popover id="rightexpand" position="bottom beforeleft">
+  <div slot="handle">Expand ▶</div>
+  <div slot="expandable">Expanded content</div>
+</juicy-popover>
+
+<h3><code>position="bottom left"</code></h3>
+
+<juicy-popover id="rightexpand" position="bottom left">
+  <div slot="handle">Expand ▶</div>
+  <div slot="expandable">Expanded content</div>
+</juicy-popover>
+
+<h3><code>position="bottom right"</code></h3>
+
+<juicy-popover id="rightexpand" position="bottom right">
+  <div slot="handle">Expand ▶</div>
+  <div slot="expandable">Expanded content</div>
+</juicy-popover>
 
 </body>
 </html>

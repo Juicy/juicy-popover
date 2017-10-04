@@ -12,6 +12,7 @@ version: 1.1.0
         #expandable {
             display: none;
             position: absolute;
+            top: 0;
             left: 0;
             z-index: 999;
         }
@@ -160,55 +161,71 @@ version: 1.1.0
             }
         };
 
+        function isLastIndex(index, length) {
+            return (index + 1 == length);
+        }
+
+        function proposeRect(position, handleRect, expandableRect) {
+            var newExpandableRect = {
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0
+            }
+            if (position.indexOf("beforetop") > -1) {
+                newExpandableRect.top = handleRect.top - expandableRect.height;
+                
+            } else if (position.indexOf("top") > -1) {
+                newExpandableRect.top = handleRect.top;
+                
+            } else {
+                newExpandableRect.top = handleRect.top + handleRect.height;
+            }
+            newExpandableRect.bottom = newExpandableRect.top + expandableRect.height;
+
+            if (position.indexOf("beforeleft") > -1) {
+                newExpandableRect.left = handleRect.left - expandableRect.width;
+            } else if (position.indexOf("left") > -1) {
+                newExpandableRect.left = handleRect.left;
+            } else {
+                newExpandableRect.left = handleRect.left + handleRect.width;
+            }
+            newExpandableRect.right = newExpandableRect.left + expandableRect.width;
+
+            return newExpandableRect;      
+        }
+
+        function doesItFit(bounding) {
+            //if this fails then switch to the library https://github.com/patik/within-viewport
+            var scrollSize = 18;
+            return (
+                    bounding.top >= 0 &&
+                    bounding.left >= 0 &&
+                    bounding.bottom <= window.innerHeight - scrollSize &&
+                    bounding.right <= window.innerWidth - scrollSize
+                );
+        }
+
         JuicyPopoverElementPrototype.reposition = function () {
-            var expandableSlot = this.shadowRoot.querySelector("#expandable");
-            var expandable = null;
-            [].forEach.call( expandableSlot.children, function(el) {
-                if(el.assignedNodes && el.assignedNodes()[0]){
-                    expandable = el.assignedNodes()[0];
-                }
-                if(el.getDistributedNodes && el.getDistributedNodes()[0]){
-                    expandable = el.getDistributedNodes()[0];
+            var expandable = this.shadowRoot.querySelector("#expandable");
+            var handle = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
+
+            var config = this.getAttribute("position") || "bottom left, top right, beforetop left, top beforeleft";
+            var positions = config.split(",");
+            var length = positions.length;
+            var handleRect = handle.getBoundingClientRect();
+            var expandableRect = expandable.getBoundingClientRect();
+
+            positions.some(function(position, index) {
+                var newExpandableRect = proposeRect(position, handleRect, expandableRect);
+                if(isLastIndex(index, length) || doesItFit(newExpandableRect)) {
+                    var parentRect = handle.offsetParent.getBoundingClientRect();
+                    var top = newExpandableRect.top - parentRect.top;
+                    var left = newExpandableRect.left - parentRect.left;
+                    expandable.style.transform = `translate(${left}px, ${top}px)`;
+                    return true;
                 }
             });
-            var styleTarget = expandableSlot;
-            var nonStyleTarget = expandable;
-            if (!expandableSlot.clientWidth) {
-                styleTarget = expandable;
-                nonStyleTarget = expandableSlot;
-            }
-            var elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
-            while (!(elem.getAttribute('slot') && elem.getAttribute('slot') == "handle")) {
-                if(elem.parentElement) {
-                    elem = elem.parentElement;
-                } else {
-                    elem = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
-                    break;
-                }
-            }
-            var position = this.getAttribute("position") || "bottom left";
-
-            if (position.indexOf("top") > -1) {
-                styleTarget.style.top = elem.offsetTop - styleTarget.offsetHeight + "px";
-            } else {
-                styleTarget.style.top = elem.offsetTop + elem.offsetHeight - nonStyleTarget.offsetTop + "px";
-            }
-    
-            if (position.indexOf("right") > -1) {
-                styleTarget.style.right = "";
-                styleTarget.style.marginRight = "";
-            } else if(position.indexOf("left") > -1){
-                styleTarget.style.right = "0";
-                styleTarget.style.marginRight = "-" + elem.clientWidth + "px";
-            } else if(position.indexOf("auto") > -1){
-                if(window.innerWidth - elem.getBoundingClientRect().right < styleTarget.offsetWidth + (parseInt(styleTarget.style.marginRight, 10) || 0)) {
-                    styleTarget.style.right = "0";
-                    styleTarget.style.marginRight = "-" + elem.clientWidth + "px";
-                } else {
-                    styleTarget.style.right = "";
-                    styleTarget.style.marginRight = "";
-                }
-            }
         };
 
         JuicyPopoverElementPrototype.expand = function (elem) {

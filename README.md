@@ -44,9 +44,20 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
 
 Attribute            | Type           | Default       | Description
 ---                  | ---            | ---           | ---
-`position`           | *String*       | `bottom left` | Position of expandable after button is pressed. Possible values: `top` or `bottom` for above or under the handler and `left`, `right` or `auto` (space separated). `Auto` makes sure that the expandable doesn't get outside of browser's window. If it doesn't for both `left` and `right` values, then the orientation is `right`. 
+`position`           | *String*       | `bottom left, top right, beforetop left, top beforeleft` | Position of the expandable after the handler is pressed. If multiple positions are provided (separated by comma), the first position that fits within the viewport will be used.
 `disabled`           | *Bool*         | `false`       | If true, element won't expand. If already expanded, it will collapse once set to true. Synchronised with property `disabled`
 `expanded`           | *Bool*         | `false`       | Determines whether it's expanded. Synchronised with property `expanded` and event `expanded-changed`
+
+## Positions
+
+Positon              | Description
+---                  | ---    
+`top`                | Position the top of the expandable at the top of the handler
+`beforetop`          | Position the bottom of the expandable at the top of the handler
+`bottom`             | Position the top of the expandable at the bottom of the handler
+`left`               | Position the left of the expandable at the left of the handler
+`beforeleft`         | Position the right of the expandable at the left of the handler
+`right`              | Position the left of the expandable at the right of the handler
 
 ## Slots
 Name                 | Description
