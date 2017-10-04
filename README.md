@@ -8,6 +8,8 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
 
 [Check it live!](http://juicy.github.io/juicy-popover)
 
+![Screen recording](docs/demo.gif)
+
 ## Usage
 
 1. Install the component using [Bower](http://bower.io/):
