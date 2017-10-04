@@ -33,13 +33,19 @@
 
     /*#combo example*/
 
+    #color-container {
+      white-space: nowrap;
+    }
+
     #color {
       margin-right: 0;
       height: 17px;
+      width: 300px;
     }
 
     #combo {
       display: inline-block;
+      margin-left: -28px;
     }
 
     #combo button[slot="handle"] {
@@ -49,7 +55,6 @@
       box-shadow: inset 0 0 0 1px #27496d;
       border: none;
       border-radius: 2px;
-      margin-left: -28px;
       padding: 1px 4px;
     }
 
@@ -119,26 +124,28 @@
 <h2>Sample combo box (automatic position)</h2>
 
 <div>Choose your favorite color:
-  <input type="text" id="color" placeholder="&lt;color&gt;">
-  <juicy-popover id="combo">
-    <button slot="handle">▼</button>
+  <span id="color-container">
+    <input type="text" id="color" placeholder="&lt;color&gt;">
+    <juicy-popover id="combo">
+      <button slot="handle">▼</button>
 
-    <div slot="expandable">
-      <button onclick="document.querySelector('#color').value = 'red'">Red</button>
-      <br>
-      <button onclick="document.querySelector('#color').value = 'green'">Green</button>
-      <br>
-      <button onclick="document.querySelector('#color').value = 'black'">Black</button>
-      <br>
-      <button onclick="document.querySelector('#color').value = 'blue'">Blue</button>
-    </div>
-  </juicy-popover>
+      <div slot="expandable">
+        <button onclick="document.querySelector('#color').value = 'red'">Red</button>
+        <br>
+        <button onclick="document.querySelector('#color').value = 'green'">Green</button>
+        <br>
+        <button onclick="document.querySelector('#color').value = 'black'">Black</button>
+        <br>
+        <button onclick="document.querySelector('#color').value = 'blue'">Blue</button>
+      </div>
+    </juicy-popover>
+  </span>
 </div>
 
 <h2>Sample expandable menu</h2>
 
-<h3><code>position="bottom left, beforetop left"</code> (fallback positions separated by a comma)</h3>
-<juicy-popover id="rightexpand" position="bottom left, beforetop left">
+<h3><code>position="bottom left, bottom beforeright"</code> (fallback positions separated by a comma)</h3>
+<juicy-popover id="rightexpand" position="bottom left, bottom beforeright">
   <div slot="handle">Expand ▶</div>
   <div slot="expandable">Expanded content</div>
 </juicy-popover>

@@ -175,6 +175,9 @@ version: 1.1.0
             if (position.indexOf("beforetop") > -1) {
                 newExpandableRect.top = handleRect.top - expandableRect.height;
                 
+            } else if (position.indexOf("beforebottom") > -1) {
+                newExpandableRect.top = handleRect.top + handleRect.height - expandableRect.height;
+                
             } else if (position.indexOf("top") > -1) {
                 newExpandableRect.top = handleRect.top;
                 
@@ -185,6 +188,8 @@ version: 1.1.0
 
             if (position.indexOf("beforeleft") > -1) {
                 newExpandableRect.left = handleRect.left - expandableRect.width;
+            } else if (position.indexOf("beforeright") > -1) {
+                newExpandableRect.left = handleRect.left + handleRect.width - expandableRect.width;
             } else if (position.indexOf("left") > -1) {
                 newExpandableRect.left = handleRect.left;
             } else {
@@ -210,7 +215,7 @@ version: 1.1.0
             var expandable = this.shadowRoot.querySelector("#expandable");
             var handle = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
 
-            var config = this.getAttribute("position") || "bottom left, top right, beforetop left, top beforeleft";
+            var config = this.getAttribute("position") || "bottom left, bottom beforeright, beforetop left, beforetop beforeright";
             var positions = config.split(",");
             var length = positions.length;
             var handleRect = handle.getBoundingClientRect();
