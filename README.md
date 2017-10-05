@@ -72,7 +72,6 @@ Name                 | Description
 Name               | Param name | Type      | Description
 ---                | ---        | ---       | ---
 `expand`           |            |           | Expand the expandable
-&nbsp;             | elem       | *Element* | DOM element is used as the reference to the position of the expandable (normally this is the handle)
 `collapse`         |            |           | Collapse the expandable
 `reposition`       |            |           | Repositions popover
 
