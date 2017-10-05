@@ -200,10 +200,10 @@ version: 1.1.0
                 newExpandableRect.left = handleRect.left - expandableRect.width;
             } else if (position.indexOf("beforeright") > -1) {
                 newExpandableRect.left = handleRect.left + handleRect.width - expandableRect.width;
-            } else if (position.indexOf("left") > -1) {
-                newExpandableRect.left = handleRect.left;
-            } else {
+            } else if (position.indexOf("right") > -1) {
                 newExpandableRect.left = handleRect.left + handleRect.width;
+            } else {
+                newExpandableRect.left = handleRect.left;
             }
             newExpandableRect.right = newExpandableRect.left + expandableRect.width;
 
