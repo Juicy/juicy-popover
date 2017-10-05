@@ -165,10 +165,6 @@ version: 1.1.0
             }
         };
 
-        function isLastIndex(index, length) {
-            return (index + 1 == length);
-        }
-
         function proposeRect(position, handleRect, expandableRect) {
             var newExpandableRect = {
                 top: 0,
@@ -226,7 +222,8 @@ version: 1.1.0
 
             positions.some(function(position, index) {
                 var newExpandableRect = proposeRect(position, handleRect, expandableRect);
-                if(isLastIndex(index, length) || doesItFit(newExpandableRect)) {
+                var isLastIndex = (index + 1 == positions.length);
+                if(isLastIndex || doesItFit(newExpandableRect)) {
                     var parentRect = handle.offsetParent.getBoundingClientRect();
                     var top = newExpandableRect.top - parentRect.top;
                     var left = newExpandableRect.left - parentRect.left;
