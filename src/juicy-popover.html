@@ -123,7 +123,7 @@ version: 1.1.0
 
             handle.addEventListener("mousedown", function (ev) {
                 if (!expandable.classList.contains("expanded")) {
-                    this.expand(ev.target);
+                    this.expand();
                     ignore = true;
                 }
             }.bind(this));
@@ -212,7 +212,7 @@ version: 1.1.0
 
         JuicyPopoverElementPrototype.reposition = function () {
             var expandable = this.shadowRoot.querySelector("#expandable");
-            var handle = this.expandedOnElement || this.shadowRoot.querySelector("#handle");
+            var handle = this.shadowRoot.querySelector("#handle");
 
             var config = this.getAttribute("position") || "bottom left, bottom beforeright, beforetop left, beforetop beforeright";
             var positions = config.split(",");
@@ -233,8 +233,7 @@ version: 1.1.0
             });
         };
 
-        JuicyPopoverElementPrototype.expand = function (elem) {
-            this.expandedOnElement = elem;
+        JuicyPopoverElementPrototype.expand = function () {
             this.expanded = true;
         };
 
