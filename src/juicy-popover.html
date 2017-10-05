@@ -5,6 +5,10 @@ version: 1.1.0
 -->
 <template id="juicy-popover-template">
     <style>
+        :host {
+            display: block;
+        }
+
         #container {
             position: relative;
         }
@@ -49,6 +53,13 @@ version: 1.1.0
         }
         else {
             importDoc = document.currentScript.ownerDocument;
+        }
+
+        var template = importDoc.querySelector('#juicy-popover-template').content;
+
+        // Shim Shadow DOM styles if needed
+        if (window.ShadowDOMPolyfill) {
+            WebComponents.ShadowCSS.shimStyling(template, 'juicy-popover');
         }
 
         var JuicyPopoverElementPrototype = Object.create(HTMLElement.prototype);
@@ -106,8 +117,7 @@ version: 1.1.0
                 }
             });
 
-            var t = importDoc.querySelector('#juicy-popover-template');
-            var clone = document.importNode(t.content, true);
+            var clone = document.importNode(template, true);
             var root;
             if (this.attachShadow) {
                 root = this.attachShadow({ mode: 'open' });
@@ -211,6 +221,7 @@ version: 1.1.0
         }
 
         JuicyPopoverElementPrototype.reposition = function () {
+            var container = this.shadowRoot.querySelector("#container");
             var expandable = this.shadowRoot.querySelector("#expandable");
             var handle = this.shadowRoot.querySelector("#handle");
 
@@ -218,21 +229,26 @@ version: 1.1.0
             var positions = config.split(",");
             var hasFallbacks = (positions.length > 1);
 
-            var handleRect = handle.getBoundingClientRect();
-            var expandableRect = expandable.getBoundingClientRect();
-
-            if (hasFallbacks && expandableRect.width == 0 && expandableRect.height == 0) {
-                console.log("You have provided more than one position, but they will not be used because the dimentions of your expandable cannot be measured. Make sure you are not using absolute positioning.");
+            var expandable = this.shadowRoot.querySelector("#expandable");
+            if (expandable.classList.contains("expanded")) {
+                this._hideExpandable();
             }
+
+            var containerRect = container.getBoundingClientRect();
+            var handleRect = handle.getBoundingClientRect();
+
+            this._showExpandable();
+
+            var expandableRect = expandable.getBoundingClientRect();
 
             positions.some(function(position, index) {
                 var newExpandableRect = proposeRect(position, handleRect, expandableRect);
                 var isLastIndex = (index + 1 == positions.length);
-                if(isLastIndex || doesItFit(newExpandableRect)) {
-                    var parentRect = handle.offsetParent.getBoundingClientRect();
-                    var top = newExpandableRect.top - parentRect.top;
-                    var left = newExpandableRect.left - parentRect.left;
-                    expandable.style.transform = `translate(${left}px, ${top}px)`;
+                if (isLastIndex || doesItFit(newExpandableRect)) {
+                    var top = newExpandableRect.top - containerRect.top;
+                    var left = newExpandableRect.left - containerRect.left;
+                    expandable.style.top = top + "px";
+                    expandable.style.left = left + "px";
                     return true;
                 }
             });
@@ -246,9 +262,6 @@ version: 1.1.0
             if (this.disabled) {
                 return;
             }
-            var expandable = this.shadowRoot.querySelector("#expandable");
-            expandable.classList.add("expanded");
-            this.classList.add("expanded");
 
             this.reposition();
 
@@ -263,13 +276,22 @@ version: 1.1.0
         };
 
         JuicyPopoverElementPrototype._collapse = function () {
-            this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
-            this.classList.remove("expanded");
+            this._hideExpandable();
 
             var e = new Event("juicy-popover-collapse");
             this.dispatchEvent(e);
             var e = new Event("expanded-changed");
             this.dispatchEvent(e);
+        };
+
+        JuicyPopoverElementPrototype._showExpandable = function () {
+            this.shadowRoot.querySelector("#expandable").classList.add("expanded");
+            this.classList.add("expanded");
+        };
+
+        JuicyPopoverElementPrototype._hideExpandable = function () {
+            this.shadowRoot.querySelector("#expandable").classList.remove("expanded");
+            this.classList.remove("expanded");
         };
 
         global.JuicyPopoverElement = document.registerElement('juicy-popover', {
