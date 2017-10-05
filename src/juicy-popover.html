@@ -206,12 +206,11 @@ version: 1.1.0
 
         function doesItFit(bounding) {
             //if this fails then switch to the library https://github.com/patik/within-viewport
-            var scrollSize = 18;
             return (
                     bounding.top >= 0 &&
                     bounding.left >= 0 &&
-                    bounding.bottom <= window.innerHeight - scrollSize &&
-                    bounding.right <= window.innerWidth - scrollSize
+                    bounding.bottom <= document.body.clientHeight &&
+                    bounding.right <= document.body.clientWidth
                 );
         }
 
