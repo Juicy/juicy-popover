@@ -62,7 +62,7 @@ version: 1.2.0
             WebComponents.ShadowCSS.shimStyling(template, 'juicy-popover');
         }
         
-        doesItFit = function (bounding) {
+        var doesItFit = function (bounding) {
             //if this fails then switch to the library https://github.com/patik/within-viewport
             return (
                     bounding.top >= 0 &&
@@ -72,7 +72,7 @@ version: 1.2.0
                 );
         }
             
-        proposeRect = function(position, handleRect, expandableRect) {
+        var proposeRect = function(position, handleRect, expandableRect) {
             var newExpandableRect = {
                 top: 0,
                 left: 0,
@@ -107,18 +107,17 @@ version: 1.2.0
             return newExpandableRect;      
         }
             
-        //var JuicyPopoverElementPrototype = Object.create(HTMLElement.prototype);
         class JuicyPopoverElement extends HTMLElement {
             
             get disabled(){
-                return this.disabledProp;
+                return this._disabled;
             }
             
             set disabled(val) {
-                if (this.disabledProp !== val) {
-                    this.disabledProp = val;
+                if (this._disabled !== val) {
+                    this._disabled = val;
                     if (val) {
-                        this.expandedProp = false;
+                        this._expanded = false;
                         this.setAttribute('disabled', '');
                     }
                     else {
@@ -128,12 +127,12 @@ version: 1.2.0
             }
             
             get expanded(){
-                return this.expandedProp;
+                return this._expanded;
             }
             
             set expanded(val) {
-                if (this.expandedProp !== val) {
-                    this.expandedProp = val;
+                if (this._expanded !== val) {
+                    this._expanded = val;
                     if(val) {
                         this.setAttribute('expanded', '');
                         this._expand();
@@ -159,8 +158,8 @@ version: 1.2.0
                 var clone = document.importNode(template, true);
                 shadowRoot.appendChild(clone);
                 self.ignore = false;
-                self.disabledProp = false;
-                self.expandedProp = false;
+                self._disabled = false;
+                self._expanded = false;
                 var handle = this.shadowRoot.querySelector("#handle");
                 var expandable = this.shadowRoot.querySelector("#expandable");
                 
@@ -264,7 +263,7 @@ version: 1.2.0
             };
 
             _expand() {
-                if (this.disabledProp) {
+                if (this._disabled) {
                     return;
                 }
 
