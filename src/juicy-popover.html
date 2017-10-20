@@ -55,12 +55,9 @@ version: 1.2.0
             importDoc = document.currentScript.ownerDocument;
         }
 
-        var template = importDoc.querySelector('#juicy-popover-template').content;
+        var template = importDoc.querySelector('#juicy-popover-template');
 
-        // Shim Shadow DOM styles if needed
-        if (window.ShadowDOMPolyfill) {
-            WebComponents.ShadowCSS.shimStyling(template, 'juicy-popover');
-        }
+        ShadyCSS.prepareTemplate(template, 'juicy-popover');
         
         var doesItFit = function (bounding) {
             //if this fails then switch to the library https://github.com/patik/within-viewport
@@ -148,6 +145,8 @@ version: 1.2.0
                 // https://github.com/WebReflection/document-register-element/tree/master#v1-caveat
                 self = super(self);
                 // Creates the shadow root
+                ShadyCSS.styleElement(self);
+
                 var shadowRoot;
                 if(self.attachShadow && self.getRootNode){
                     shadowRoot = self.attachShadow({mode:'open'});
@@ -155,7 +154,7 @@ version: 1.2.0
                     shadowRoot = self.createShadowRoot();
                 }
                 
-                var clone = document.importNode(template, true);
+                var clone = document.importNode(template.content, true);
                 shadowRoot.appendChild(clone);
                 self.ignore = false;
                 self._disabled = false;
