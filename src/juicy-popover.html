@@ -59,7 +59,7 @@ version: 1.2.0
         
         var usedShadyCss = false;
         if (window.ShadowDOMPolyfill) {
-            WebComponents.ShadowCSS.shimStyling(template.content, 'juicy-ace-editor');
+            WebComponents.ShadowCSS.shimStyling(template.content, 'juicy-popover');
         } else if(window.ShadyCSS) {
             usedShadyCss = true;
             ShadyCSS.prepareTemplate(template, 'juicy-popover');
