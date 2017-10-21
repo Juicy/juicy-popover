@@ -56,9 +56,14 @@ version: 1.2.0
         }
 
         var template = importDoc.querySelector('#juicy-popover-template');
-
-        ShadyCSS.prepareTemplate(template, 'juicy-popover');
         
+        var usedShadyCss = false;
+        if (window.ShadowDOMPolyfill) {
+            WebComponents.ShadowCSS.shimStyling(template.content, 'juicy-ace-editor');
+        } else if(window.ShadyCSS) {
+            usedShadyCss = true;
+            ShadyCSS.prepareTemplate(template, 'juicy-popover');
+        }
         var doesItFit = function (bounding) {
             //if this fails then switch to the library https://github.com/patik/within-viewport
             return (
@@ -139,14 +144,21 @@ version: 1.2.0
                     }
                 }
             }
-                
+            
+            static get observedAttributes() {
+                return ['disabled', 'expanded']; 
+            }
+            
             constructor(self) {
                 // Polyfill ceveat we need to fetch the right context;
                 // https://github.com/WebReflection/document-register-element/tree/master#v1-caveat
                 self = super(self);
+                
+                if(usedShadyCss) {
+                    ShadyCSS.styleElement(self);
+                }
+                
                 // Creates the shadow root
-                ShadyCSS.styleElement(self);
-
                 var shadowRoot;
                 if(self.attachShadow && self.getRootNode){
                     shadowRoot = self.attachShadow({mode:'open'});
