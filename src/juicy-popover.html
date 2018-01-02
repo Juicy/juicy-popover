@@ -45,236 +45,218 @@ version: 1.2.0
 
 <script>
     (function (global, document) {
-        var importDoc;
-        if (document._currentScript) {
-            //@see http://www.polymer-project.org/platform/html-imports.html
-            //@see https://groups.google.com/d/topic/polymer-dev/4UKty9tb1-s/discussion
-            importDoc = document._currentScript.ownerDocument;
-        }
-        else {
-            importDoc = document.currentScript.ownerDocument;
-        }
-
-        var template = importDoc.querySelector('#juicy-popover-template');
         
-        var usedShadyCss = false;
+        const importDoc = (document._currentScript || document.currentScript).ownerDocument;
+        const template = importDoc.querySelector('#juicy-popover-template');
+
+        let usedShadyCss = false;
         if (window.ShadowDOMPolyfill) {
             WebComponents.ShadowCSS.shimStyling(template.content, 'juicy-popover');
-        } else if(window.ShadyCSS) {
+        } else if (window.ShadyCSS) {
             usedShadyCss = true;
             ShadyCSS.prepareTemplate(template, 'juicy-popover');
         }
-        var doesItFit = function (bounding) {
+        function doesItFit(bounding) {
             //if this fails then switch to the library https://github.com/patik/within-viewport
             return (
-                    bounding.top >= 0 &&
-                    bounding.left >= 0 &&
-                    bounding.bottom <= document.body.clientHeight &&
-                    bounding.right <= document.body.clientWidth
-                );
+                bounding.top >= 0 &&
+                bounding.left >= 0 &&
+                bounding.bottom <= document.body.clientHeight &&
+                bounding.right <= document.body.clientWidth
+            );
         }
-            
-        var proposeRect = function(position, handleRect, expandableRect) {
-            var newExpandableRect = {
+        function proposeRect(position, handleRect, expandableRect) {
+            const newExpandableRect = {
                 top: 0,
                 left: 0,
                 right: 0,
                 bottom: 0
             };
-            if (position.indexOf("beforetop") > -1) {
+            if (position.includes('beforetop')) {
                 newExpandableRect.top = handleRect.top - expandableRect.height;
-                
-            } else if (position.indexOf("beforebottom") > -1) {
+
+            } else if (position.includes('beforebottom')) {
                 newExpandableRect.top = handleRect.top + handleRect.height - expandableRect.height;
-                
-            } else if (position.indexOf("top") > -1) {
+
+            } else if (position.includes('top')) {
                 newExpandableRect.top = handleRect.top;
-                
+
             } else {
                 newExpandableRect.top = handleRect.top + handleRect.height;
             }
             newExpandableRect.bottom = newExpandableRect.top + expandableRect.height;
 
-            if (position.indexOf("beforeleft") > -1) {
+            if (position.includes('beforeleft')) {
                 newExpandableRect.left = handleRect.left - expandableRect.width;
-            } else if (position.indexOf("beforeright") > -1) {
+            } else if (position.includes('beforeright')) {
                 newExpandableRect.left = handleRect.left + handleRect.width - expandableRect.width;
-            } else if (position.indexOf("right") > -1) {
+            } else if (position.includes('right')) {
                 newExpandableRect.left = handleRect.left + handleRect.width;
             } else {
                 newExpandableRect.left = handleRect.left;
             }
             newExpandableRect.right = newExpandableRect.left + expandableRect.width;
 
-            return newExpandableRect;      
+            return newExpandableRect;
         }
-            
+
         class JuicyPopoverElement extends HTMLElement {
-            
-            get disabled(){
-                return this._disabled;
+
+            get disabled() {
+                return this.getAttribute('disabled');
             }
-            
+
             set disabled(val) {
-                if (this._disabled !== val) {
-                    this._disabled = val;
-                    if (val) {
-                        this._expanded = false;
-                        this.setAttribute('disabled', '');
-                    }
-                    else {
-                        this.removeAttribute('disabled');
-                    }
+                if (val) {
+                    this.removeAttribute('expanded');
+                    this.setAttribute('disabled', '');
+                }
+                else {
+                    this.removeAttribute('disabled');
                 }
             }
-            
-            get expanded(){
-                return this._expanded;
+
+            get expanded() {
+                return this.getAttribute('expanded');
             }
-            
+
             set expanded(val) {
-                if (this._expanded !== val) {
-                    this._expanded = val;
-                    if(val) {
-                        this.setAttribute('expanded', '');
-                        this._expand();
-                    } else {
-                        this.removeAttribute('expanded');
-                        this._collapse();
-                    }
+                if (val) {
+                    this.setAttribute('expanded', '');
+                } else {
+                    this.removeAttribute('expanded');
                 }
             }
-            
+
             static get observedAttributes() {
-                return ['disabled', 'expanded']; 
+                return ['disabled', 'expanded'];
             }
-            
+
             constructor(self) {
                 // Polyfill ceveat we need to fetch the right context;
                 // https://github.com/WebReflection/document-register-element/tree/master#v1-caveat
                 self = super(self);
-                
-                if(usedShadyCss) {
+
+                if (usedShadyCss) {
                     ShadyCSS.styleElement(self);
                 }
-                
+
                 // Creates the shadow root
-                var shadowRoot;
-                if(self.attachShadow && self.getRootNode){
-                    shadowRoot = self.attachShadow({mode:'open'});
+                let shadowRoot;
+                if (self.attachShadow && self.getRootNode) {
+                    shadowRoot = self.attachShadow({ mode: 'open' });
                 } else {
                     shadowRoot = self.createShadowRoot();
                 }
-                
-                var clone = document.importNode(template.content, true);
+
+                const clone = document.importNode(template.content, true);
                 shadowRoot.appendChild(clone);
-                self.ignore = false;
-                self._disabled = false;
-                self._expanded = false;
-                var handle = this.shadowRoot.querySelector("#handle");
-                var expandable = this.shadowRoot.querySelector("#expandable");
                 
-                handle.addEventListener("mousedown", function (ev) {
+                self.ignore = false;
+                const handle = this.shadowRoot.querySelector("#handle");
+                const expandable = this.shadowRoot.querySelector("#expandable");
+
+                handle.addEventListener("mousedown", ev => {
                     if (!expandable.classList.contains("expanded")) {
-                        this.expand();
+                        self.expand();
                         self.ignore = true;
                     }
-                }.bind(this));
+                });
 
-                handle.addEventListener("mouseup", function (ev) {
+                handle.addEventListener("mouseup", ev => {
                     if (ev.target.nodeName == "INPUT") {
                         self.ignore = true; //just a friendly feature - don't collapse the expandable if clicked on a handler which is an input
                     }
-                }.bind(this));
+                });
 
-                expandable.addEventListener("mousedown", function (ev) {
+                expandable.addEventListener("mousedown", ev => {
                     self.ignore = true;
-                }.bind(this));
+                });
 
-                window.addEventListener("mouseup", function (ev) {
+                window.addEventListener("mouseup", ev => {
                     if (!self.ignore && expandable.classList.contains("expanded")) {
-                        this.collapse();
+                        self.collapse();
                     }
                     self.ignore = false;
-                }.bind(this));
+                });
 
-                window.addEventListener("resize", function (e) {
+                window.addEventListener("resize", e => {
                     if (expandable.classList.contains("expanded")) {
-                        this.reposition();
+                        self.reposition();
                     }
-                }.bind(this));
+                });
                 // This will work only in V1
-                shadowRoot.getElementById('deprecated-v1').addEventListener('slotchange', function(ev){
+                shadowRoot.getElementById('deprecated-v1').addEventListener('slotchange', ev => {
                     const slottedElements = ev.target.assignedNodes();
                     console.warn('Slot name `expendable` is deprecated, please use `expandable`!', slottedElements);
                 });
-                
+
                 return self;
             }
-            
+
             attributeChangedCallback(attr, oldVal, newVal) {
                 switch (attr) {
                     case "disabled":
-                        var shouldBeDisabled = (newVal !== null);
-                        this.disabled = shouldBeDisabled;
+                        if (newVal !== null) {
+                            this.removeAttribute('expanded');
+                        }
                         break;
-
                     case "expanded":
-                        var shouldBeExpanded = (newVal !== null);
-                        this.expanded = shouldBeExpanded;
-                        break;
+                        if (newVal !== null) {
+                            this._expand();
+                        } else {
+                            this._collapse();
+                        }
                 }
             }
-            
             connectedCallback() {
                 const slottedElements = this.attachShadow ?
-                                           this.shadowRoot.getElementById('deprecated-v1').assignedNodes() :
-                                           this.shadowRoot.getElementById('deprecated-v0').getDistributedNodes();
+                    this.shadowRoot.getElementById('deprecated-v1').assignedNodes() :
+                    this.shadowRoot.getElementById('deprecated-v0').getDistributedNodes();
+
                 if (slottedElements.length) {
-                   console.warn('Slot name `expendable` is deprecated, please use `expandable`!', slottedElements);
+                    console.warn('Slot name `expendable` is deprecated, please use `expandable`!', slottedElements);
                 }
             }
-            
+
             reposition() {
-                var container = this.shadowRoot.querySelector("#container");
-                var expandable = this.shadowRoot.querySelector("#expandable");
-                var handle = this.shadowRoot.querySelector("#handle");
+                const container = this.shadowRoot.querySelector("#container");
+                const expandable = this.shadowRoot.querySelector("#expandable");
+                const handle = this.shadowRoot.querySelector("#handle");
 
-                var config = this.getAttribute("position") || "bottom left, bottom beforeright, beforetop left, beforetop beforeright";
-                var positions = config.split(",");
-                var hasFallbacks = (positions.length > 1);
+                const config = this.getAttribute("position") || "bottom left, bottom beforeright, beforetop left, beforetop beforeright";
+                const positions = config.split(",");
 
-                var expandable = this.shadowRoot.querySelector("#expandable");
                 if (expandable.classList.contains("expanded")) {
                     this._hideExpandable();
                 }
 
-                var containerRect = container.getBoundingClientRect();
-                var handleRect = handle.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                const handleRect = handle.getBoundingClientRect();
 
                 this._showExpandable();
 
-                var expandableRect = expandable.getBoundingClientRect();
-                
-                positions.some(function(position, index) {
-                    var newExpandableRect = proposeRect(position, handleRect, expandableRect);
-                    var isLastIndex = (index + 1 == positions.length);
+                const expandableRect = expandable.getBoundingClientRect();
+
+                positions.some((position, index) => {
+                    const newExpandableRect = proposeRect(position, handleRect, expandableRect);
+                    const isLastIndex = (index + 1 == positions.length);
                     if (isLastIndex || doesItFit(newExpandableRect)) {
-                        var top = newExpandableRect.top - containerRect.top;
-                        var left = newExpandableRect.left - containerRect.left;
-                        expandable.style.top = top + "px";
-                        expandable.style.left = left + "px";
+                        const top = newExpandableRect.top - containerRect.top;
+                        const left = newExpandableRect.left - containerRect.left;
+                        expandable.style.top = `${top}px`;
+                        expandable.style.left = `${left}px`;
                         return true;
                     }
                 });
             }
-            
+
             expand() {
                 this.expanded = true;
             };
 
             _expand() {
-                if (this._disabled) {
+                if (this.hasAttribute('disabled')) {
                     return;
                 }
 
@@ -309,7 +291,7 @@ version: 1.2.0
                 this.classList.remove("expanded");
             };
         }
-        
+
         global.customElements.define('juicy-popover', JuicyPopoverElement);
     })(window, document);
 </script>
