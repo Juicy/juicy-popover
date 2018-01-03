@@ -7,6 +7,12 @@
     "grunt": "^1.0.1",
     "grunt-bump": "^0.8.0"
   },
+  "scripts": {
+    "test": "wct --skip-plugin sauce"    
+  },
+  "devDependencies": {
+    "web-component-tester": "^6.4.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Juicy/juicy-popover"
