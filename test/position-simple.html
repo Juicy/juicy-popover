@@ -49,56 +49,56 @@
                 position: "bottom left",
                 expectation: () => {
                     expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top)
-                    expect(handleBoundingBox.left).to.be.equal(expendableBoundingBox.left)
+                    expect(handleBoundingBox.left).to.be.closeEnoughToValue(expendableBoundingBox.left)
                 }
             },
             {
                 position: "bottom beforeright",
                 expectation: () => {
                     expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top)
-                    expect(handleBoundingBox.left).to.be.equal(expendableBoundingBox.left)
+                    expect(handleBoundingBox.left).to.be.closeEnoughToValue(expendableBoundingBox.left)
                 }
             }, 
             {
                 position: "beforetop left",
                 expectation: () => {
                     expect(handleBoundingBox.top).to.be.greaterThan(expendableBoundingBox.top)
-                    expect(handleBoundingBox.left).to.be.equal(expendableBoundingBox.left)
+                    expect(handleBoundingBox.left).to.be.closeEnoughToValue(expendableBoundingBox.left)
                 }
             }, 
             {
                 position: "beforetop beforeleft",
                 expectation: () => {
                     expect(handleBoundingBox.top).to.be.greaterThan(expendableBoundingBox.top);
-                    expect(expendableBoundingBox.left).to.equal(handleBoundingBox.left - expendableBoundingBox.width);
+                    expect(expendableBoundingBox.left).to.be.closeEnoughToValue(handleBoundingBox.left - expendableBoundingBox.width);
                 }
             },
             {
                 position: "beforetop right",
                 expectation: () => {
                     expect(handleBoundingBox.top).to.be.greaterThan(expendableBoundingBox.top);
-                    expect(handleBoundingBox.left).to.equal(expendableBoundingBox.left - handleBoundingBox.width);
+                    expect(handleBoundingBox.left).to.be.closeEnoughToValue(expendableBoundingBox.left - handleBoundingBox.width);
                 }
             },
             {
                 position: "bottom beforeleft",
                 expectation: () => {
                     expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top);
-                    expect(expendableBoundingBox.left).to.equal(handleBoundingBox.left - expendableBoundingBox.width);
+                    expect(expendableBoundingBox.left).to.be.closeEnoughToValue(handleBoundingBox.left - expendableBoundingBox.width);
                 }
             },
             {
                 position: "bottom left",
                 expectation: () => {
                     expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top);
-                    expect(handleBoundingBox.left).to.equal(expendableBoundingBox.left);
+                    expect(handleBoundingBox.left).to.be.closeEnoughToValue(expendableBoundingBox.left);
                 }
             },
             {
                 position: "bottom right",
                 expectation: () => {
                     expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top);
-                    expect(expendableBoundingBox.left).to.equal(handleBoundingBox.left + handleBoundingBox.width);
+                    expect(expendableBoundingBox.left).to.be.closeEnoughToValue(handleBoundingBox.left + handleBoundingBox.width);
                 }
             },
         ]
