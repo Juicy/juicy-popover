@@ -108,7 +108,7 @@ version: 1.2.0
         }
 
         function windowResizeHandler() {
-            if (expandable.classList.contains("expanded")) {
+            if (this.$.expandable.classList.contains("expanded")) {
                 this.reposition();
             }
         }
@@ -251,7 +251,7 @@ version: 1.2.0
                 const expandableRect = this.$.expandable.getBoundingClientRect();
 
                 positions.some((position, index) => {
-                    const newExpandableRect = proposeRect(position, handleRect, expandableRect);                    
+                    const newExpandableRect = proposeRect(position, handleRect, expandableRect);
                     const isLastIndex = (index + 1 == positions.length);
                     if (isLastIndex || doesItFit(newExpandableRect)) {
                         const top = newExpandableRect.top - containerRect.top;
