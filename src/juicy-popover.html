@@ -45,13 +45,13 @@ version: 1.2.0
         const importDoc = (document._currentScript || document.currentScript).ownerDocument;
         const template = importDoc.querySelector('#juicy-popover-template');
 
-        let usedShadyCss = false;
-        if (window.ShadowDOMPolyfill) {
-            WebComponents.ShadowCSS.shimStyling(template.content, 'juicy-popover');
-        } else if (window.ShadyCSS) {
+        let usedShadyCss  = false;
+        
+        if (window.ShadyCSS) {
             usedShadyCss = true;
             ShadyCSS.prepareTemplate(template, 'juicy-popover');
         }
+        
         function doesItFit(bounding) {
             //if this fails then switch to the library https://github.com/patik/within-viewport
             return (
@@ -207,7 +207,7 @@ version: 1.2.0
                 window.addEventListener("mouseup", this.clickOutsideHandler);
                 window.addEventListener("resize", this.windowResizeHandler);
             }
-            
+
             disconnectedCallback() {
                 window.removeEventListener('mouseup', this.clickOutsideHandler);
                 window.removeEventListener('resize', this.windowResizeHandler);
