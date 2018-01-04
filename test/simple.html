@@ -1,0 +1,94 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <!-- Step 1: import the element to test -->
+    <link rel="import" href="../src/juicy-popover.html">
+    <script src="./helpers.js"></script>
+</head>
+
+<body>
+    <!-- You can use the document as a place to set up your fixtures. -->
+    <test-fixture id="juicy-popover-fixture">
+        <template>
+            <juicy-popover>
+                <div slot="handle" id="handleButton">Expand</div>
+                <div slot="expandable" id="expandableContent">Expanded</div>
+            </juicy-popover>
+        </template>
+    </test-fixture>
+
+    <script>
+        describe('<juicy-popover>', function (done) {
+            var juicyPopover, expandableContent, handleButton;
+           
+            beforeEach(function () {
+                juicyPopover = fixture('juicy-popover-fixture');
+                expandableContent = juicyPopover.querySelector('#expandableContent');
+                handleButton = juicyPopover.querySelector('#handleButton');
+            });
+
+            it("Expandable should be invisible by default", function () {
+                expect(expandableContent).to.be.not.visible;
+            });
+
+            it("Expandable should show after clicking the handle", function () {
+                // control test
+                expect(expandableContent).to.be.not.visible;
+
+                // do it
+                simulateEvent('mousedown', handleButton);
+                
+                // real test
+                expect(expandableContent).to.be.visible;
+            });
+
+            it("Expandable should hide after clicking the handle again", function () {
+                // control test
+                expect(expandableContent).to.be.not.visible;
+
+                // show it
+                simulateEvent('mousedown', handleButton);
+                simulateEvent('mouseup', handleButton);
+                
+                // should be shown now
+                expect(expandableContent).to.be.visible;
+
+                // click again
+                simulateEvent('mousedown', handleButton);
+                simulateEvent('mouseup', handleButton);
+                
+                // real test, should be hidden now
+                expect(expandableContent).to.be.not.visible;
+            });
+
+            it("Expandable should hide after clicking outside", function () {
+                // control test
+                expect(expandableContent).to.be.not.visible;
+
+                // show it
+                simulateEvent('mousedown', handleButton);
+                simulateEvent('mouseup', handleButton);   
+                                
+                // is it shown?
+                expect(expandableContent).to.be.visible;
+                
+                // click outside
+                simulateEvent('mousedown', window);
+                simulateEvent('mouseup', window);
+                
+                // check if hidden
+                expect(expandableContent).to.be.not.visible;
+            });
+        });
+    </script>
+
+</body>
+
+</html>

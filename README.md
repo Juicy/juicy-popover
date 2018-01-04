@@ -21,7 +21,7 @@ It is flexible enough to be used to create dropdowns, combo boxes, tooltips, etc
 2. Import Web Components' polyfill (optional, allows to run it in old browsers):
 
     ```html
-    <script src="//cdn.jsdelivr.net/webcomponentsjs/0.5.5/webcomponents.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@1.0.17/webcomponents-lite.min.js"></script>
     ```
 
 3. Import Custom Element:

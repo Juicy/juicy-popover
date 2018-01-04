@@ -14,11 +14,9 @@
     "combo",
     "combobox"
   ],
-  "ignore": [
-    "**/.*",
-    "bower_components"
-  ],
-  "dependencies": {
-    "webcomponentsjs": "^0.7.22"
+  "ignore": ["**/.*", "bower_components"],
+  "devDependencies": {
+    "webcomponentsjs": "^1.0.0",
+    "web-component-tester": "^6.4.1"
   }
 }

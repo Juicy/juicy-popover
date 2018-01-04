@@ -1,0 +1,148 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <!-- Step 1: import the element to test -->
+    <link rel="import" href="../src/juicy-popover.html">
+    <script src="./helpers.js"></script>
+</head>
+
+<body>
+
+    <style>
+        #container {
+            display: flex;
+            width: 50%;
+            height: 100vh;
+            align-items: center;
+            justify-content: center
+        }
+        /* for easier calculations */
+        juicy-popover div {
+            width: 100px;
+            height: 30px;
+            border: 1px solid #eee
+        }
+    </style>
+    <!-- You can use the document as a place to set up your fixtures. -->
+    <test-fixture id="juicy-popover-fixture">
+        <template>
+            <div id="container">
+                <juicy-popover>
+                    <div slot="handle" id="handleButton">Expand ▶</div>
+                    <div slot="expandable" id="expandableContent">Expanded</div>
+                </juicy-popover>
+            </div>
+        </template>
+    </test-fixture>
+
+    <script>
+        var juicyPopover, expandableContent, handleButton, handleBoundingBox, expendableBoundingBox;
+        const positionAndExpectations = [
+            {
+                position: "bottom left",
+                expectation: () => {
+                    expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top)
+                    expect(handleBoundingBox.left).to.be.closeEnoughToValue(expendableBoundingBox.left)
+                }
+            },
+            {
+                position: "bottom beforeright",
+                expectation: () => {
+                    expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top)
+                    expect(handleBoundingBox.left).to.be.closeEnoughToValue(expendableBoundingBox.left)
+                }
+            }, 
+            {
+                position: "beforetop left",
+                expectation: () => {
+                    expect(handleBoundingBox.top).to.be.greaterThan(expendableBoundingBox.top)
+                    expect(handleBoundingBox.left).to.be.closeEnoughToValue(expendableBoundingBox.left)
+                }
+            }, 
+            {
+                position: "beforetop beforeleft",
+                expectation: () => {
+                    expect(handleBoundingBox.top).to.be.greaterThan(expendableBoundingBox.top);
+                    expect(expendableBoundingBox.left).to.be.closeEnoughToValue(handleBoundingBox.left - expendableBoundingBox.width);
+                }
+            },
+            {
+                position: "beforetop right",
+                expectation: () => {
+                    expect(handleBoundingBox.top).to.be.greaterThan(expendableBoundingBox.top);
+                    expect(handleBoundingBox.left).to.be.closeEnoughToValue(expendableBoundingBox.left - handleBoundingBox.width);
+                }
+            },
+            {
+                position: "bottom beforeleft",
+                expectation: () => {
+                    expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top);
+                    expect(expendableBoundingBox.left).to.be.closeEnoughToValue(handleBoundingBox.left - expendableBoundingBox.width);
+                }
+            },
+            {
+                position: "bottom left",
+                expectation: () => {
+                    expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top);
+                    expect(handleBoundingBox.left).to.be.closeEnoughToValue(expendableBoundingBox.left);
+                }
+            },
+            {
+                position: "bottom right",
+                expectation: () => {
+                    expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top);
+                    expect(expendableBoundingBox.left).to.be.closeEnoughToValue(handleBoundingBox.left + handleBoundingBox.width);
+                }
+            },
+        ]
+        
+        describe('<juicy-popover>', function (done) {
+
+            beforeEach(function () {
+                juicyPopover = fixture('juicy-popover-fixture').querySelector('juicy-popover');
+                expandableContent = juicyPopover.querySelector('#expandableContent');
+                handleButton = juicyPopover.querySelector('#handleButton');
+
+                handleBoundingBox = handleButton.getBoundingClientRect();
+            });
+
+            it("Expandable should be on the bottom left by default", function () {
+                // show the extendable
+                simulateEvent('mousedown', handleButton);
+
+                expendableBoundingBox = expandableContent.getBoundingClientRect();
+
+                expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top);
+            });
+
+            context('Verify position attribute applicaton', function () {
+
+                positionAndExpectations.forEach(test => {
+                    it(`${test.position}: Expandable should be on the: ${test.position}`, function () {
+                        
+                        //set position
+                        juicyPopover.setAttribute('position', test.position);
+
+                        // show the extendable
+                        simulateEvent('mousedown', handleButton);
+
+                        expendableBoundingBox = expandableContent.getBoundingClientRect();
+
+                        test.expectation();
+                    });
+                })
+            });
+        })
+
+    </script>
+
+</body>
+
+</html>
