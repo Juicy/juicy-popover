@@ -42,8 +42,7 @@ version: 2.0.0
 <script>
     (function (global, document) {
 
-        const importDoc = (document._currentScript || document.currentScript).ownerDocument;
-        const template = importDoc.querySelector('#juicy-popover-template');
+        const template = document.currentScript.ownerDocument.querySelector('#juicy-popover-template');
 
         let usedShadyCss  = false;
         
