@@ -42,15 +42,16 @@ version: 2.0.0
 <script>
     (function (global, document) {
 
-        const template = document.currentScript.ownerDocument.querySelector('#juicy-popover-template');
+        const importDoc = (document._currentScript || document.currentScript).ownerDocument;
+        const template = importDoc.querySelector('#juicy-popover-template');
 
-        let usedShadyCss  = false;
-        
+        let usedShadyCss = false;
+
         if (window.ShadyCSS) {
             usedShadyCss = true;
             ShadyCSS.prepareTemplate(template, 'juicy-popover');
         }
-        
+
         function doesItFit(bounding) {
             //if this fails then switch to the library https://github.com/patik/within-viewport
             return (
@@ -60,6 +61,7 @@ version: 2.0.0
                 bounding.right <= document.body.clientWidth
             );
         }
+
         function proposeRect(position, handleRect, expandableRect) {
             const newExpandableRect = {
                 top: 0,
@@ -87,7 +89,10 @@ version: 2.0.0
                 newExpandableRect.left = handleRect.left + handleRect.width - expandableRect.width;
             } else if (position.includes('right')) {
                 newExpandableRect.left = handleRect.left + handleRect.width;
-            } else {
+            } else if (position.includes('center')) {
+                newExpandableRect.left = Math.round(handleRect.left + handleRect.width / 2 - expandableRect.width / 2);
+            }
+            else {
                 newExpandableRect.left = handleRect.left;
             }
             newExpandableRect.right = newExpandableRect.left + expandableRect.width;
@@ -136,8 +141,28 @@ version: 2.0.0
                 }
             }
 
+            get expandOn() {
+                return this.getAttribute('expandOn');
+            }
+            //
+            set expandOn(val) {
+                console.error(this.constructor.name, this.expandOn, val);
+                // this.setAttribute('expand-on', val);
+                this.events = {
+                    expand: 'mousedown',
+                    collapse: 'mouseup',
+                }
+
+                if (this.expandOn === 'hover') {
+                    this.events = {
+                        expand: 'mouseover',
+                        collapse: 'mouseout'
+                    };
+                }
+            }
+
             static get observedAttributes() {
-                return ['disabled', 'expanded'];
+                return ['disabled', 'expanded', 'expand-on'];
             }
 
             constructor(self) {
@@ -153,7 +178,7 @@ version: 2.0.0
                 }
 
                 // Creates the shadow root
-                const shadowRoot = self.attachShadow({ mode: 'open' });                
+                const shadowRoot = self.attachShadow({mode: 'open'});
 
                 const clone = document.importNode(template.content, true);
                 shadowRoot.appendChild(clone);
@@ -164,24 +189,41 @@ version: 2.0.0
                     container: this.shadowRoot.querySelector("#container")
                 }
 
-                this.$.handle.addEventListener("mousedown", ev => {
-                    if (!this.$.expandable.classList.contains("expanded")) {
-                        self.expand();
-                        self.ignore = true;
-                    }
-                });
+                this.expandOn = this.getAttribute('expand-on') || 'click'; // click or hover
 
-                this.$.handle.addEventListener("mouseup", ev => {
-                    if (ev.target.nodeName == "INPUT") {
-                        self.ignore = true; //just a friendly feature - don't collapse the expandable if clicked on a handler which is an input
-                    }
-                });
-
-                this.$.expandable.addEventListener("mousedown", ev => {
-                    self.ignore = true;
-                });
+                this.addEvents();
 
                 return self;
+            }
+
+            addEvents() {
+                console.error(this.constructor.name, this.events);
+                this.$.handle.addEventListener(this.events.expand, this.handleExpandEventCallback.bind(this));
+                this.$.handle.addEventListener(this.events.collapse, this.handleCollapseEventCallback.bind(this));
+                this.$.expandable.addEventListener(this.events.expand, this.expandableExpandEventCallback.bind(this));
+            }
+
+            handleExpandEventCallback(ev) {
+                if (!this.$.expandable.classList.contains("expanded")) {
+                    this.expand();
+                    this.ignore = true;
+                }
+            }
+
+            handleCollapseEventCallback(ev) {
+                if (ev.target.nodeName == "INPUT") {
+                    this.ignore = true; //just a friendly feature - don't collapse the expandable if clicked on a handler which is an input
+                }
+            }
+
+            expandableExpandEventCallback(ev) {
+                this.ignore = true;
+            }
+
+            removeEvents() {
+                this.$.handle.removeEventListener(this.events.expand, this.handleExpandEventCallback.bind(this));
+                this.$.handle.removeEventListener(this.events.collapse, this.handleCollapseEventCallback.bind(this));
+                this.$.expandable.removeEventListener(this.events.expand, this.expandableExpandEventCallback.bind(this));
             }
 
             attributeChangedCallback(attr, oldVal, newVal) {
@@ -197,19 +239,31 @@ version: 2.0.0
                         } else {
                             this._collapse();
                         }
+                        break;
+                    case "expand-on":
+                        console.log(this.expandOn, this.getAttribute('expand-on'));
+                        this.removeEvents();
+                        this.disconnectedCallback();
+                        this.expandOn = newVal;
+                        this.addEvents();
+                        break;
                 }
             }
-            connectedCallback() {                
+
+            connectedCallback() {
                 this.hasAttribute('expanded') && this.attributeChangedCallback('expanded', null, this.getAttribute('expanded'));
                 this.hasAttribute('disabled') && this.attributeChangedCallback('disabled', null, this.getAttribute('disabled'));
-
-                window.addEventListener("mouseup", this.clickOutsideHandler);
-                window.addEventListener("resize", this.windowResizeHandler);
+                this.addWindowEvents();
             }
 
             disconnectedCallback() {
-                window.removeEventListener('mouseup', this.clickOutsideHandler);
+                window.removeEventListener(this.events.collapse, this.clickOutsideHandler);
                 window.removeEventListener('resize', this.windowResizeHandler);
+            }
+
+            addWindowEvents() {
+                window.addEventListener(this.events.collapse, this.clickOutsideHandler.bind(this));
+                window.addEventListener("resize", this.windowResizeHandler.bind(this));
             }
 
             reposition() {
@@ -281,9 +335,10 @@ version: 2.0.0
                 this.classList.remove("expanded");
             };
         }
+
         /**
-            setting this property to true would keep the popover open even if the user clicked outside it. 
-        */
+         setting this property to true would keep the popover open even if the user clicked outside it.
+         */
         JuicyPopoverElement.prototype.ignore = false;
 
         global.customElements.define('juicy-popover', JuicyPopoverElement);
