@@ -78,7 +78,10 @@ version: 2.0.0
             } else if (position.includes('top')) {
                 newExpandableRect.top = handleRect.top;
 
-            } else {
+            } else if (position.includes('middle')) {
+                newExpandableRect.top = Math.round(handleRect.top + handleRect.height / 2 - expandableRect.height / 2);
+            }
+            else {
                 newExpandableRect.top = handleRect.top + handleRect.height;
             }
             newExpandableRect.bottom = newExpandableRect.top + expandableRect.height;
@@ -144,6 +147,7 @@ version: 2.0.0
             get expandOn() {
                 return this.getAttribute('expandOn');
             }
+
             //
             set expandOn(val) {
                 console.error(this.constructor.name, this.expandOn, val);
