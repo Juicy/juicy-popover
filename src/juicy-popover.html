@@ -151,18 +151,7 @@ version: 2.0.0
             //
             set expandOn(val) {
                 console.error(this.constructor.name, this.expandOn, val);
-                // this.setAttribute('expand-on', val);
-                this.events = {
-                    expand: 'mousedown',
-                    collapse: 'mouseup',
-                }
-
-                if (this.expandOn === 'hover') {
-                    this.events = {
-                        expand: 'mouseover',
-                        collapse: 'mouseout'
-                    };
-                }
+                this.setAttribute('expand-on', val);
             }
 
             static get observedAttributes() {
@@ -194,6 +183,19 @@ version: 2.0.0
                 }
 
                 this.expandOn = this.getAttribute('expand-on') || 'click'; // click or hover
+
+                this.events = {
+                    expand: 'mousedown',
+                    collapse: 'mouseup',
+                }
+
+                if (this.expandOn === 'hover') {
+                    this.events = {
+                        expand: 'mouseover',
+                        collapse: 'mouseout'
+                    };
+                }
+
 
                 this.addEvents();
 
@@ -245,10 +247,23 @@ version: 2.0.0
                         }
                         break;
                     case "expand-on":
-                        console.log(this.expandOn, this.getAttribute('expand-on'));
+                        console.log('expandOnObserver', this.expandOn, this.getAttribute('expand-on'));
                         this.removeEvents();
                         this.disconnectedCallback();
-                        this.expandOn = newVal;
+
+                        this.events = {
+                            expand: 'mousedown',
+                            collapse: 'mouseup',
+                        }
+
+                        if (newVal === 'hover') {
+                            this.events = {
+                                expand: 'mouseover',
+                                collapse: 'mouseout'
+                            };
+                        }
+
+                        // this.expandOn = newVal;
                         this.addEvents();
                         break;
                 }
