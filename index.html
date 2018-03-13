@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -128,93 +128,102 @@
 <h2>Sample combo box (automatic position)</h2>
 
 <div>Choose your favorite color:
-  <span id="color-container">
-    <input type="text" id="color" placeholder="&lt;color&gt;">
-    <juicy-popover id="combo">
-      <button slot="handle">▼</button>
+    <span id="color-container">
+        <input type="text" id="color" placeholder="&lt;color&gt;">
+        <juicy-popover id="combo">
+            <button slot="handle">▼</button>
 
-      <div slot="expandable">
-        <button onclick="document.querySelector('#color').value = 'red'">Red</button>
-        <br>
-        <button onclick="document.querySelector('#color').value = 'green'">Green</button>
-        <br>
-        <button onclick="document.querySelector('#color').value = 'black'">Black</button>
-        <br>
-        <button onclick="document.querySelector('#color').value = 'blue'">Blue</button>
-      </div>
-    </juicy-popover>
-  </span>
+            <div slot="expandable">
+                <button onclick="document.querySelector('#color').value = 'red'">Red</button>
+                <br>
+                <button onclick="document.querySelector('#color').value = 'green'">Green</button>
+                <br>
+                <button onclick="document.querySelector('#color').value = 'black'">Black</button>
+                <br>
+                <button onclick="document.querySelector('#color').value = 'blue'">Blue</button>
+            </div>
+        </juicy-popover>
+    </span>
 </div>
 
 <h2>Sample expandable menu</h2>
 
 <h3><code>position="bottom left, bottom beforeright"</code> (fallback positions separated by a comma)</h3>
 <juicy-popover id="rightexpand" position="bottom left, bottom beforeright">
-  <div slot="handle">Expand ▶</div>
-  <div slot="expandable">Expanded content</div>
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
+</juicy-popover>
+ 
+<h3><code>position="middle center"</code></h3>
+<juicy-popover id="rightexpand" position="middle center">
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
 <h3><code>position="top beforeleft"</code></h3>
-
 <juicy-popover id="rightexpand" position="top beforeleft">
-  <div slot="handle">Expand ▶</div>
-  <div slot="expandable">Expanded content</div>
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
+</juicy-popover>
+
+<h3><code>position="beforetop center"</code></h3>
+<juicy-popover id="rightexpand" position="beforetop center">
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
 <h3><code>position="top left"</code></h3>
-
 <juicy-popover id="rightexpand" position="top left">
-  <div slot="handle">Expand ▶</div>
-  <div slot="expandable">Expanded content</div>
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
 <h3><code>position="top right"</code></h3>
-
 <juicy-popover id="rightexpand" position="top right">
-  <div slot="handle">Expand ▶</div>
-  <div slot="expandable">Expanded content</div>
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
 <h3><code>position="beforetop beforeleft"</code></h3>
-
 <juicy-popover id="rightexpand" position="beforetop beforeleft">
-  <div slot="handle">Expand ▶</div>
-  <div slot="expandable">Expanded content</div>
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
 <h3><code>position="beforetop left"</code></h3>
-
 <juicy-popover id="rightexpand" position="beforetop left">
-  <div slot="handle">Expand ▶</div>
-  <div slot="expandable">Expanded content</div>
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
 <h3><code>position="beforetop right"</code></h3>
-
 <juicy-popover id="rightexpand" position="beforetop right">
-  <div slot="handle">Expand ▶</div>
-  <div slot="expandable">Expanded content</div>
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
 <h3><code>position="bottom beforeleft"</code></h3>
-
 <juicy-popover id="rightexpand" position="bottom beforeleft">
-  <div slot="handle">Expand ▶</div>
-  <div slot="expandable">Expanded content</div>
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
 <h3><code>position="bottom left"</code></h3>
-
 <juicy-popover id="rightexpand" position="bottom left">
-  <div slot="handle">Expand ▶</div>
-  <div slot="expandable">Expanded content</div>
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
+</juicy-popover>
+
+<h3><code>position="bottom center"</code></h3>
+<juicy-popover id="rightexpand" position="bottom center">
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
 <h3><code>position="bottom right"</code></h3>
-
 <juicy-popover id="rightexpand" position="bottom right">
-  <div slot="handle">Expand ▶</div>
-  <div slot="expandable">Expanded content</div>
+    <div slot="handle">Expand ▶</div>
+    <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
 </body>

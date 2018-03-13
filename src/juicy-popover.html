@@ -76,6 +76,8 @@ version: 2.0.0
             } else if (position.includes('top')) {
                 newExpandableRect.top = handleRect.top;
 
+            } else if (position.includes('middle')) {
+                newExpandableRect.top = Math.round(handleRect.top + handleRect.height / 2 - expandableRect.height / 2);
             } else {
                 newExpandableRect.top = handleRect.top + handleRect.height;
             }
@@ -87,6 +89,8 @@ version: 2.0.0
                 newExpandableRect.left = handleRect.left + handleRect.width - expandableRect.width;
             } else if (position.includes('right')) {
                 newExpandableRect.left = handleRect.left + handleRect.width;
+            } else if (position.includes('center')) {
+                newExpandableRect.left = Math.round(handleRect.left + handleRect.width / 2 - expandableRect.width / 2);
             } else {
                 newExpandableRect.left = handleRect.left;
             }
