@@ -81,6 +81,13 @@
                 }
             },
             {
+                position: "beforetop center",
+                expectation: () => {
+                    expect(handleBoundingBox.top).to.be.greaterThan(expendableBoundingBox.top);
+                    expect(expendableBoundingBox.left).to.be.closeEnoughToValue(Math.round(handleBoundingBox.left + handleBoundingBox.width / 2 - expendableBoundingBox.width / 2));
+                }
+            },
+            {
                 position: "bottom beforeleft",
                 expectation: () => {
                     expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top);
@@ -101,6 +108,13 @@
                     expect(expendableBoundingBox.left).to.be.closeEnoughToValue(handleBoundingBox.left + handleBoundingBox.width);
                 }
             },
+            {
+                position: "bottom center",
+                expectation: () => {
+                    expect(handleBoundingBox.top).to.be.lessThan(expendableBoundingBox.top);
+                    expect(expendableBoundingBox.left).to.be.closeEnoughToValue(Math.round(handleBoundingBox.left + handleBoundingBox.width / 2 - expendableBoundingBox.width / 2));
+                }
+            }
         ]
         
         describe('<juicy-popover>', function (done) {
