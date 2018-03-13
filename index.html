@@ -147,6 +147,9 @@
 </div>
 
 <h2>Sample expandable menu</h2>
+Expand on:
+<label><input type="radio" name="expand-on" value="click" checked>Mouse click</label>
+<label><input type="radio" name="expand-on" value="hover">Mouse hover</label>
 
 <h3><code>position="bottom left, bottom beforeright"</code> (fallback positions separated by a comma)</h3>
 <juicy-popover id="rightexpand" position="bottom left, bottom beforeright">
@@ -226,5 +229,18 @@
     <div slot="expandable">Expanded content</div>
 </juicy-popover>
 
+<script>
+    (function  () {
+        var popoverRadios = document.querySelectorAll('input[name="expand-on"]');
+ 
+        popoverRadios.forEach(radio => {
+            radio.addEventListener('change', event => {
+                document.querySelectorAll('juicy-popover').forEach(popover => {
+                    popover.setAttribute('expand-on', radio.value);
+                });
+            });
+        });
+    })();
+</script>
 </body>
 </html>
