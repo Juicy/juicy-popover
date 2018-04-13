@@ -34,3 +34,25 @@ In order to develop it locally we suggest to use [polyserve](https://npmjs.com/p
 4. Push to the branch: `git push origin my-new-feature`
 5. Open corresponding issue if needed
 6. Submit a pull request :D
+
+## Unit tests
+
+All Juicy custom elements projects use [`web-component-tester`](https://github.com/Polymer/web-component-tester) for unit tests.
+The [`polyserve`](https://github.com/PolymerLabs/polyserve) utility is helpful for [running tests in the browser](#developing-the-element).
+
+### Running element unit tests from CLI
+
+To run the element unit tests from CLI, you need to:
+
+0.  Install `web-component-tester` globally: `npm install -g web-component-tester`
+1.  Clone the element repo.
+2.  Install the dependencies. `bower install`
+3.  Run the tests: `wct`
+
+#### Configuring `web-component-tester`
+
+By default, `web-component-tester` runs tests on all installed browsers. You can configure it
+to run tests on a subset of available browsers, or to run tests remotely using Sauce Labs.
+
+See the [`web-component-tester` README](https://github.com/Polymer/web-component-tester) for
+information on configuring the tool.
