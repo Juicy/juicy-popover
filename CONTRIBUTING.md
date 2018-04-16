@@ -47,7 +47,7 @@ To run the element unit tests from CLI, you need to:
 0.  Install `web-component-tester` globally: `npm install -g web-component-tester`
 1.  Clone the element repo.
 2.  Install the dependencies. `bower install`
-3.  Run the tests: `wct`
+3.  Run the tests: `wct` (be patient - the first run might take 5 minutes to download the Selenium framework)
 
 #### Configuring `web-component-tester`
 
