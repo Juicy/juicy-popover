@@ -3,7 +3,9 @@ sudo: required
 dist: trusty
 before_script:
   - npm install
+  - npm install web-component-tester
   - npm install bower
+  - export PATH=$PWD/node_modules/.bin:$PATH
   - bower install
 node_js: stable
 addons:
