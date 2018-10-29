@@ -60,9 +60,9 @@
                 // should be shown now
                 expect(expandableContent).to.be.visible;
 
-                // click again
-                simulateEvent('mousedown', handleButton);
-                simulateEvent('mouseup', handleButton);
+                // click outside
+                simulateEvent('mousedown', window);
+                simulateEvent('mouseup', window);
                 
                 // real test, should be hidden now
                 expect(expandableContent).to.be.not.visible;
