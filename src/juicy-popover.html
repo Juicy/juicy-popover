@@ -214,13 +214,9 @@ version: 2.1.0
             }
 
             handleCollapseEventCallback(ev) {
-                if (ev.target.nodeName === "INPUT") {
-                    this.ignore = true; //just a friendly feature - don't collapse the expandable if clicked on a handler which is an input
-                }
-                if (ev.type !== "mouseup") {
-                    if (this.ignore && this.$.expandable.classList.contains("expanded")) {
-                        this.collapse();
-                    }
+                this.ignore = true;
+                if (ev.type !== "mouseup" && this.$.expandable.classList.contains("expanded")) {
+                    this.collapse();
                     this.ignore = false;
                 }
             }
@@ -261,6 +257,7 @@ version: 2.1.0
                         }
 
                         this.addEvents();
+                        this.addWindowEvents();
                         break;
                 }
             }
