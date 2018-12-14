@@ -22,7 +22,8 @@ version: 2.1.1
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 999;
+            z-index: 999; /*For IE11 support*/
+            z-index: var(--popover-z-index, 999);
         }
 
         #expandable.expanded {
