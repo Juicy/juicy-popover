@@ -77,6 +77,12 @@ Name               | Param name | Type      | Description
 `collapse`         |            |           | Collapse the expandable
 `reposition`       |            |           | Repositions popover
 
+## Custom property
+
+Name                  | Type       | Default   | Description
+---                   | ---        | ---       | ---
+`--popover-z-index`   | *Number*   | `999`     | The `z-index` value of the expandable item
+
 ## [Contributing and Development](CONTRIBUTING.md)
 
 ## License
