@@ -16,11 +16,17 @@
 <body>
     <!-- You can use the document as a place to set up your fixtures. -->
     <test-fixture id="juicy-popover-fixture">
+        
         <template>
+            <style>
+                juicy-popover {
+                    --popover-z-index: 55551;
+                }
+            </style>
             <juicy-popover>
                 <div slot="handle" id="handleButton">Expand</div>
                 <div slot="expandable" id="expandableContent">Expanded</div>
-            </juicy-popover>
+            </juicy-popover>            
         </template>
     </test-fixture>
 
@@ -29,7 +35,7 @@
             var juicyPopover, expandableContent, handleButton;
            
             beforeEach(function () {
-                juicyPopover = fixture('juicy-popover-fixture');
+                juicyPopover = fixture('juicy-popover-fixture')[1];
                 expandableContent = juicyPopover.querySelector('#expandableContent');
                 handleButton = juicyPopover.querySelector('#handleButton');
             });
@@ -85,6 +91,11 @@
                 
                 // check if hidden
                 expect(expandableContent).to.be.not.visible;
+            });
+
+            it("Should use CSS custom property as a z-index", function () {
+                const zIndex = window.getComputedStyle(juicyPopover.$.expandable).zIndex;
+                expect(zIndex).to.equal('55551');
             });
         });
     </script>
