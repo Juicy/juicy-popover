@@ -14,7 +14,13 @@
     "combo",
     "combobox"
   ],
-  "ignore": ["**/.*", "bower_components"],
+  "ignore": [
+    "**/.*", 
+    "bower_components",
+    "test",
+    "wct.conf.json",
+    "Gruntfile.js"
+  ],
   "devDependencies": {
     "webcomponentsjs": "^1.0.0",
     "web-component-tester": "^6.4.1"
